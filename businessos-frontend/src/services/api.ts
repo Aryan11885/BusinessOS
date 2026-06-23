@@ -99,3 +99,98 @@ export async function getOpportunities() {
 
   return response.json();
 }
+
+export async function convertLead(
+  leadId: string
+) {
+  const response = await fetch(
+    `${API_URL}/leads/${leadId}/convert`,
+    {
+      method: "POST",
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      "Failed to convert lead"
+    );
+  }
+
+  return response.json();
+}
+
+export async function getOpportunityById(
+  id: string
+) {
+  const response = await fetch(
+    `${API_URL}/opportunities/${id}`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      "Failed to fetch opportunity"
+    );
+  }
+
+  return response.json();
+}
+
+export async function updateOpportunity(
+  id: string,
+  data: any
+) {
+  const response = await fetch(
+    `${API_URL}/opportunities/${id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      "Failed to update opportunity"
+    );
+  }
+
+  return response.json();
+}
+
+export async function getProposals() {
+  const response = await fetch(
+    `${API_URL}/proposals/`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch proposals");
+  }
+
+  return response.json();
+}
+
+export async function getProposalById(
+  id: string
+) {
+  const response = await fetch(
+    `${API_URL}/proposals/${id}`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch proposal");
+  }
+
+  return response.json();
+}
+

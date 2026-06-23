@@ -161,3 +161,48 @@ def delete_lead(
     return {
         "message": "Lead deleted successfully"
     }
+
+from app.models.opportunity import Opportunity
+
+@router.post("/{lead_id}/convert")
+def convert_lead(
+    lead_id: int,
+    db: Session = Depends(get_db)
+):
+    lead = (
+        db.query(Lead)
+        .filter(Lead.id == lead_id)
+        .first()
+    )
+
+    if not lead:
+        raise HTTPException(
+            status_code=404,
+            detail="Lead not found"
+        )
+
+    opportunity = Opportunity(
+        organization_id=lead.organization_id,
+        lead_id=lead.id,
+        owner_user_id=lead.owner_user_id,
+
+        title=f"{lead.company_name} Opportunity",
+
+        value=lead.lead_value,
+
+        stage="NEW",
+
+        probability=10
+    )
+
+    db.add(opportunity)
+
+    lead.is_converted = True
+
+    db.commit()
+    db.refresh(opportunity)
+
+    return {
+        "message": "Lead converted successfully",
+        "opportunity_id": opportunity.id
+    }

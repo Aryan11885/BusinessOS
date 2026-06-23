@@ -13,6 +13,10 @@ from app.api.opportunities import (
     router as opportunities_router
 )
 
+from app.api.proposals import (
+    router as proposals_router
+)
+
 # CORS
 app.add_middleware(
     CORSMiddleware,
@@ -27,6 +31,7 @@ app.add_middleware(
 app.include_router(auth_router)
 app.include_router(leads_router)
 app.include_router(opportunities_router)
+app.include_router(proposals_router)
 
 
 @app.get("/")
@@ -34,3 +39,4 @@ def root():
     return {
         "message": "BusinessOS API Running"
     }
+

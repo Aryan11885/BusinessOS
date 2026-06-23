@@ -1,6 +1,7 @@
 import { getLeadById } from "@/services/api";
 import Link from "next/link";
 import DeleteLeadButton from "@/components/DeleteLeadButton";
+import ConvertLeadButton from "@/components/ConvertLeadButton";
 
 type Props = {
   params: Promise<{
@@ -59,6 +60,7 @@ export default async function LeadDetailsPage({ params }: Props) {
         </Link>
 
         <DeleteLeadButton id={lead.id} />
+        <ConvertLeadButton leadId={lead.id} />
       </div>
     </div>
   );
