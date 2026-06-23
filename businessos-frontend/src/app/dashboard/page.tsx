@@ -1,45 +1,41 @@
-import Sidebar from "@/components/Sidebar";
+import AppLayout from "@/components/AppLayout";
 
 export default function DashboardPage() {
   return (
-    <div className="flex">
-      <Sidebar />
+    <AppLayout>
+      <h1 className="text-3xl font-bold mb-6">
+        Dashboard
+      </h1>
 
-      <main className="flex-1 p-8">
-        <h1 className="text-3xl font-bold">
-          Dashboard
-        </h1>
-
-        <div className="grid grid-cols-4 gap-4 mt-8">
-          <div className="border rounded-xl p-5">
-            <h2>Total Leads</h2>
-            <p className="text-3xl font-bold">
-              1
-            </p>
-          </div>
-
-          <div className="border rounded-xl p-5">
-            <h2>Open Leads</h2>
-            <p className="text-3xl font-bold">
-              1
-            </p>
-          </div>
-
-          <div className="border rounded-xl p-5">
-            <h2>Won Deals</h2>
-            <p className="text-3xl font-bold">
-              0
-            </p>
-          </div>
-
-          <div className="border rounded-xl p-5">
-            <h2>Revenue</h2>
-            <p className="text-3xl font-bold">
-              ₹200000
-            </p>
-          </div>
+      <div className="grid grid-cols-4 gap-4">
+        <div className="bg-white rounded-xl p-5 shadow">
+          <h2>Total Leads</h2>
+          <p className="text-3xl font-bold">
+            2
+          </p>
         </div>
-      </main>
-    </div>
+
+        <div className="bg-white rounded-xl p-5 shadow">
+          <h2>Open Leads</h2>
+          <p className="text-3xl font-bold">
+            2
+          </p>
+        </div>
+
+        <div className="bg-white rounded-xl p-5 shadow">
+          <h2>Won Deals</h2>
+          <p className="text-3xl font-bold">
+            0
+          </p>
+        </div>
+
+        <div className="bg-white rounded-xl p-5 shadow">
+          <h2>Revenue</h2>
+          <p className="text-3xl font-bold">
+            ₹500000
+          </p>
+        </div>
+      </div>
+    </AppLayout>
   );
 }

@@ -82,3 +82,20 @@ export async function deleteLead(id: string) {
 
   return response.json();
 }
+
+export async function getOpportunities() {
+  const response = await fetch(
+    `${API_URL}/opportunities/`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      "Failed to fetch opportunities"
+    );
+  }
+
+  return response.json();
+}
