@@ -1,6 +1,7 @@
 import AppLayout from "@/components/AppLayout";
 import { getOpportunityById } from "@/services/api";
 import Link from "next/link";
+import GenerateProposalButton from "@/components/GenerateProposalButton";
 
 type Props = {
   params: Promise<{
@@ -15,12 +16,7 @@ export default async function OpportunityDetailsPage({ params }: Props) {
 
   return (
     <AppLayout>
-      <Link
-        href={`/opportunities/${opportunity.id}/edit`}
-        className="bg-blue-600 text-white px-4 py-2 rounded inline-block mb-6"
-      >
-        Edit Opportunity
-      </Link>
+      
       <h1 className="text-3xl font-bold mb-6">Opportunity Details</h1>
 
       <div className="bg-white rounded-xl p-6 shadow space-y-4">
@@ -53,6 +49,20 @@ export default async function OpportunityDetailsPage({ params }: Props) {
           {String(opportunity.expected_close_date)}
         </div>
       </div>
+
+      <div className="flex gap-2 mt-4">
+        <Link
+        href={`/opportunities/${opportunity.id}/edit`}
+        className="bg-blue-600 text-white px-4 py-2 rounded inline-block mb-6"
+      >
+        Edit Opportunity
+      </Link>
+
+      <div className="mb-6">
+        <GenerateProposalButton opportunity={opportunity} />
+      </div>
+      </div>
+
     </AppLayout>
   );
 }

@@ -194,3 +194,70 @@ export async function getProposalById(
   return response.json();
 }
 
+export async function createProposal(
+  data: any
+) {
+  const response = await fetch(
+    `${API_URL}/proposals/`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type":
+          "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      "Failed to create proposal"
+    );
+  }
+
+  return response.json();
+}
+
+export async function updateProposal(
+  id: string,
+  data: any
+) {
+  const response = await fetch(
+    `${API_URL}/proposals/${id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      "Failed to update proposal"
+    );
+  }
+
+  return response.json();
+}
+
+export async function deleteProposal(
+  id: string
+) {
+  const response = await fetch(
+    `${API_URL}/proposals/${id}`,
+    {
+      method: "DELETE",
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      "Failed to delete proposal"
+    );
+  }
+
+  return response.json();
+}
+
