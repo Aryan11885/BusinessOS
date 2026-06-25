@@ -261,3 +261,94 @@ export async function deleteProposal(
   return response.json();
 }
 
+export async function getCustomers() {
+  const response = await fetch(
+    `${API_URL}/customers/`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch customers");
+  }
+
+  return response.json();
+}
+
+export async function getCustomerById(
+  id: string
+) {
+  const response = await fetch(
+    `${API_URL}/customers/${id}`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch customer");
+  }
+
+  return response.json();
+}
+
+export async function createCustomer(
+  data: any
+) {
+  const response = await fetch(
+    `${API_URL}/customers/`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to create customer");
+  }
+
+  return response.json();
+}
+
+export async function updateCustomer(
+  id: string,
+  data: any
+) {
+  const response = await fetch(
+    `${API_URL}/customers/${id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to update customer");
+  }
+
+  return response.json();
+}
+
+export async function deleteCustomer(
+  id: string
+) {
+  const response = await fetch(
+    `${API_URL}/customers/${id}`,
+    {
+      method: "DELETE",
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to delete customer");
+  }
+
+  return response.json();
+}

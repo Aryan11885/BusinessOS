@@ -1,5 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from app.models.customer import Customer
+from app.models.opportunity import Opportunity
+from app.models.lead import Lead
 
 from app.db.database import get_db
 
@@ -130,4 +133,71 @@ def delete_proposal(
 
     return {
         "message": "Proposal deleted successfully"
+    }
+
+@router.post("/{proposal_id}/convert")
+def convert_proposal(
+    proposal_id: int,
+    db: Session = Depends(get_db)
+):
+    proposal = (
+        db.query(Proposal)
+        .filter(Proposal.id == proposal_id)
+        .first()
+    )
+
+    if not proposal:
+        raise HTTPException(
+            status_code=404,
+            detail="Proposal not found"
+        )
+
+    opportunity = (
+        db.query(Opportunity)
+        .filter(
+            Opportunity.id == proposal.opportunity_id
+        )
+        .first()
+    )
+
+    if not opportunity:
+        raise HTTPException(
+            status_code=404,
+            detail="Opportunity not found"
+        )
+
+    lead = (
+        db.query(Lead)
+        .filter(
+            Lead.id == opportunity.lead_id
+        )
+        .first()
+    )
+
+    if not lead:
+        raise HTTPException(
+            status_code=404,
+            detail="Lead not found"
+        )
+
+    customer = Customer(
+        organization_id=lead.organization_id,
+        proposal_id=proposal.id,
+        company_name=lead.company_name,
+        contact_name=f"{lead.first_name} {lead.last_name}",
+        email=lead.email,
+        phone=lead.phone,
+        status="ACTIVE"
+    )
+
+    db.add(customer)
+
+    proposal.status = "APPROVED"
+
+    db.commit()
+    db.refresh(customer)
+
+    return {
+        "message": "Proposal converted successfully",
+        "customer_id": customer.id
     }
