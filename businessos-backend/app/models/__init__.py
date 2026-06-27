@@ -7,3 +7,5 @@ from app.models.lead import Lead
 from app.models.opportunity import Opportunity
 from app.models.proposal import Proposal
 from app.models.customer import Customer
+from app.models.project import Project
+from app.models.task import Task

@@ -21,6 +21,15 @@ from app.api.customers import (
     router as customers_router
 )
 
+from app.api.projects import (
+    router as projects_router
+)
+
+from app.api.tasks import (
+    router as tasks_router
+)
+
+
 # CORS
 app.add_middleware(
     CORSMiddleware,
@@ -37,6 +46,8 @@ app.include_router(leads_router)
 app.include_router(opportunities_router)
 app.include_router(proposals_router)
 app.include_router(customers_router)
+app.include_router(projects_router)
+app.include_router(tasks_router)
 
 
 @app.get("/")
