@@ -6,7 +6,12 @@ from app.models.task import Task
 class TaskService:
 
     @staticmethod
-    def create_task(db: Session, payload):
+    def create_task(
+        db: Session,
+        payload
+    ):
+        from app.services.project_service import ProjectService
+
         task = Task(
             project_id=payload.project_id,
             title=payload.title,
@@ -20,14 +25,24 @@ class TaskService:
         db.commit()
         db.refresh(task)
 
+        ProjectService.calculate_progress(
+            db,
+            task.project_id
+        )
+
         return task
 
     @staticmethod
-    def get_tasks(db: Session):
+    def get_tasks(
+        db: Session
+    ):
         return db.query(Task).all()
 
     @staticmethod
-    def get_task(db: Session, task_id: int):
+    def get_task(
+        db: Session,
+        task_id: int
+    ):
         return (
             db.query(Task)
             .filter(Task.id == task_id)
@@ -40,6 +55,8 @@ class TaskService:
         task_id: int,
         payload
     ):
+        from app.services.project_service import ProjectService
+
         task = (
             db.query(Task)
             .filter(Task.id == task_id)
@@ -58,6 +75,11 @@ class TaskService:
         db.commit()
         db.refresh(task)
 
+        ProjectService.calculate_progress(
+            db,
+            task.project_id
+        )
+
         return task
 
     @staticmethod
@@ -65,6 +87,8 @@ class TaskService:
         db: Session,
         task_id: int
     ):
+        from app.services.project_service import ProjectService
+
         task = (
             db.query(Task)
             .filter(Task.id == task_id)
@@ -74,7 +98,14 @@ class TaskService:
         if not task:
             return None
 
+        project_id = task.project_id
+
         db.delete(task)
         db.commit()
+
+        ProjectService.calculate_progress(
+            db,
+            project_id
+        )
 
         return True

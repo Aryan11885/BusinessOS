@@ -7,7 +7,6 @@ export default async function LeadsPage() {
 
   return (
     <AppLayout>
-      ...
       <div className="p-8">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold">Leads</h1>

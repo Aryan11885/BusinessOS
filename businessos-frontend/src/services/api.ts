@@ -352,3 +352,119 @@ export async function deleteCustomer(
 
   return response.json();
 }
+
+export async function getProjects() {
+  const response = await fetch(
+    `${API_URL}/projects`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch projects");
+  }
+
+  return response.json();
+}
+
+export async function getProjectById(
+  id: string
+) {
+  const response = await fetch(
+    `${API_URL}/projects/${id}`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch project");
+  }
+
+  return response.json();
+}
+
+export async function createProject(
+  data: any
+) {
+  const response = await fetch(
+    `${API_URL}/projects`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type":
+          "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  );
+
+  return response.json();
+}
+
+export async function updateProject(
+  id: string,
+  data: any
+) {
+  const response = await fetch(
+    `${API_URL}/projects/${id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type":
+          "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  );
+
+  return response.json();
+}
+
+export async function deleteProject(
+  id: string
+) {
+  const response = await fetch(
+    `${API_URL}/projects/${id}`,
+    {
+      method: "DELETE",
+    }
+  );
+
+  return response.json();
+}
+
+export async function getTasks() {
+  const response = await fetch(
+    `${API_URL}/tasks`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch tasks");
+  }
+
+  return response.json();
+}
+
+export async function createTask(data: any) {
+  const response = await fetch(
+    `${API_URL}/tasks`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to create task");
+  }
+
+  return response.json();
+}

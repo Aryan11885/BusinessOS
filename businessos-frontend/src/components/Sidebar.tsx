@@ -14,6 +14,8 @@ export default function Sidebar() {
 
         <Link href="/proposals">Proposals</Link>
 
+        <Link href="/projects">Projects</Link>
+
         <Link href="/customers">Customers</Link>
 
         <Link href="#">Tasks</Link>
