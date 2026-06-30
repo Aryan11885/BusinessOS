@@ -5,17 +5,29 @@ type Task = {
   title: string;
   status: string;
   priority: string;
-  assignee: string;
+  assignee?: string;
 };
 
-export default function KanbanBoard({ tasks }: { tasks: Task[] }) {
-  const todo = tasks.filter((task) => task.status === "TODO");
+export default function KanbanBoard({
+  tasks,
+}: {
+  tasks: Task[];
+}) {
+  const todo = tasks.filter(
+    (task) => task.status === "TODO"
+  );
 
-  const progress = tasks.filter((task) => task.status === "IN_PROGRESS");
+  const progress = tasks.filter(
+    (task) => task.status === "IN_PROGRESS"
+  );
 
-  const review = tasks.filter((task) => task.status === "REVIEW");
+  const review = tasks.filter(
+    (task) => task.status === "REVIEW"
+  );
 
-  const done = tasks.filter((task) => task.status === "DONE");
+  const done = tasks.filter(
+    (task) => task.status === "DONE"
+  );
 
   const columns = [
     {
@@ -44,7 +56,7 @@ export default function KanbanBoard({ tasks }: { tasks: Task[] }) {
           className="bg-slate-100 rounded-xl p-4 min-h-[500px]"
         >
           <h2 className="font-bold text-lg mb-4 flex justify-between">
-            {column.title}
+            <span>{column.title}</span>
 
             <span className="bg-white rounded-full px-2 text-sm">
               {column.items.length}
@@ -53,7 +65,10 @@ export default function KanbanBoard({ tasks }: { tasks: Task[] }) {
 
           <div className="space-y-3">
             {column.items.map((task) => (
-              <TaskCard key={task.id} task={task} />
+              <TaskCard
+                key={task.id}
+                task={task}
+              />
             ))}
           </div>
         </div>

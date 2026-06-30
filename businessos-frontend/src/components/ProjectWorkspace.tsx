@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+
 import ProgressBar from "./ProgressBar";
 import KanbanBoard from "./KanbanBoard";
 import AddTaskModal from "./AddTaskModal";
@@ -25,6 +26,7 @@ export default function ProjectWorkspace({ project, tasks }: Props) {
 
   return (
     <div className="space-y-6">
+      {/* Header */}
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold">{project.name}</h1>
@@ -32,44 +34,63 @@ export default function ProjectWorkspace({ project, tasks }: Props) {
           <p className="text-gray-500 mt-2">{project.description}</p>
         </div>
 
-        <button
-          onClick={() => setShowModal(true)}
-          className="bg-blue-600 text-white px-5 py-3 rounded-lg"
-        >
-          + Add Task
-        </button>
+        <div className="flex gap-3">
+          <a
+            href={`/projects/${project.id}/edit`}
+            className="bg-gray-700 text-white px-5 py-3 rounded-lg hover:bg-gray-800 transition"
+          >
+            Edit Project
+          </a>
+
+          <button
+            onClick={() => setShowModal(true)}
+            className="bg-blue-600 text-white px-5 py-3 rounded-lg hover:bg-blue-700 transition"
+          >
+            + Add Task
+          </button>
+        </div>
       </div>
 
+      {/* Progress */}
       <div className="bg-white rounded-xl shadow p-6">
         <ProgressBar progress={project.progress} />
       </div>
 
-      <div className="bg-white rounded-xl shadow p-6">
-        <KanbanBoard tasks={tasks} />
-      </div>
-
+      {/* Statistics */}
       <div className="grid grid-cols-4 gap-4">
         <div className="bg-white rounded-xl shadow p-5">
-          <h3>Total Tasks</h3>
+          <h3 className="text-gray-500">Total Tasks</h3>
+
           <p className="text-3xl font-bold mt-3">{totalTasks}</p>
         </div>
 
         <div className="bg-white rounded-xl shadow p-5">
-          <h3>Completed</h3>
+          <h3 className="text-gray-500">Completed</h3>
+
           <p className="text-3xl font-bold mt-3">{completedTasks}</p>
         </div>
 
         <div className="bg-white rounded-xl shadow p-5">
-          <h3>In Progress</h3>
+          <h3 className="text-gray-500">In Progress</h3>
+
           <p className="text-3xl font-bold mt-3">{inProgressTasks}</p>
         </div>
 
         <div className="bg-white rounded-xl shadow p-5">
-          <h3>Pending</h3>
+          <h3 className="text-gray-500">Pending</h3>
+
           <p className="text-3xl font-bold mt-3">{pendingTasks}</p>
         </div>
       </div>
 
+      {/* Kanban */}
+      <div className="bg-white rounded-xl shadow p-6">
+        <h2 className="text-2xl font-bold mb-5">Task Board</h2>
+
+        <KanbanBoard tasks={tasks} />
+      </div>
+
+      {/* Add Task Modal */}
       {showModal && (
         <AddTaskModal
           projectId={project.id}
