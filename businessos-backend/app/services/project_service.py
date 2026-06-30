@@ -74,18 +74,31 @@ class ProjectService:
         db: Session,
         project_id: int
     ):
+        from app.models.task import Task
+    
         project = (
             db.query(Project)
             .filter(Project.id == project_id)
             .first()
         )
-
+    
         if not project:
             return None
-
+    
+        task_count = (
+            db.query(Task)
+            .filter(Task.project_id == project_id)
+            .count()
+        )
+    
+        if task_count > 0:
+            return {
+                "error": "Project has tasks"
+            }
+    
         db.delete(project)
         db.commit()
-
+    
         return True
 
     @staticmethod

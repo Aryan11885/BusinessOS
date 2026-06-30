@@ -95,6 +95,12 @@ def delete_project(
         db,
         project_id
     )
+    
+    if isinstance(deleted, dict):
+       raise HTTPException(
+           status_code=400,
+           detail="Delete all tasks before deleting this project."
+       )
 
     if not deleted:
         raise HTTPException(

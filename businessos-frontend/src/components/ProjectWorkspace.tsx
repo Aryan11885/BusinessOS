@@ -5,6 +5,7 @@ import { useState } from "react";
 import ProgressBar from "./ProgressBar";
 import KanbanBoard from "./KanbanBoard";
 import AddTaskModal from "./AddTaskModal";
+import EditTaskModal from "./EditTaskModal";
 
 type Props = {
   project: any;
@@ -13,6 +14,7 @@ type Props = {
 
 export default function ProjectWorkspace({ project, tasks }: Props) {
   const [showModal, setShowModal] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<any>(null);
 
   const totalTasks = tasks.length;
 
@@ -87,7 +89,10 @@ export default function ProjectWorkspace({ project, tasks }: Props) {
       <div className="bg-white rounded-xl shadow p-6">
         <h2 className="text-2xl font-bold mb-5">Task Board</h2>
 
-        <KanbanBoard tasks={tasks} />
+        <KanbanBoard
+          tasks={tasks}
+          onTaskClick={(task) => setSelectedTask(task)}
+        />
       </div>
 
       {/* Add Task Modal */}
@@ -98,6 +103,12 @@ export default function ProjectWorkspace({ project, tasks }: Props) {
           onTaskCreated={() => {
             window.location.reload();
           }}
+        />
+      )}
+      {selectedTask && (
+        <EditTaskModal
+          task={selectedTask}
+          onClose={() => setSelectedTask(null)}
         />
       )}
     </div>

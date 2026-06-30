@@ -8,14 +8,16 @@ type Task = {
   assignee?: string;
 };
 
+type Props = {
+  tasks: Task[];
+  onTaskClick?: (task: Task) => void;
+};
+
 export default function KanbanBoard({
   tasks,
-}: {
-  tasks: Task[];
-}) {
-  const todo = tasks.filter(
-    (task) => task.status === "TODO"
-  );
+  onTaskClick,
+}: Props) {
+  const todo = tasks.filter((task) => task.status === "TODO");
 
   const progress = tasks.filter(
     (task) => task.status === "IN_PROGRESS"
@@ -25,9 +27,7 @@ export default function KanbanBoard({
     (task) => task.status === "REVIEW"
   );
 
-  const done = tasks.filter(
-    (task) => task.status === "DONE"
-  );
+  const done = tasks.filter((task) => task.status === "DONE");
 
   const columns = [
     {
@@ -68,6 +68,7 @@ export default function KanbanBoard({
               <TaskCard
                 key={task.id}
                 task={task}
+                onClick={() => onTaskClick?.(task)}
               />
             ))}
           </div>

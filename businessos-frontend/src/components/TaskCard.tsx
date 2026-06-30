@@ -7,10 +7,13 @@ type Task = {
 
 type Props = {
   task: Task;
-  
+  onClick?: () => void;
 };
 
-export default function TaskCard({ task }: Props) {
+export default function TaskCard({
+  task,
+  onClick,
+}: Props) {
   const priorityColor = {
     HIGH: "bg-red-100 text-red-700",
     MEDIUM: "bg-yellow-100 text-yellow-700",
@@ -19,29 +22,35 @@ export default function TaskCard({ task }: Props) {
 
   return (
     <div
-      
+      onClick={onClick}
       className="bg-white rounded-xl shadow border p-4 hover:shadow-lg hover:cursor-pointer transition"
     >
       <div className="flex justify-between items-center">
         <span
           className={`text-xs px-2 py-1 rounded-full ${
-            priorityColor[task.priority as keyof typeof priorityColor]
+            priorityColor[
+              task.priority as keyof typeof priorityColor
+            ]
           }`}
         >
           {task.priority}
         </span>
       </div>
 
-      <h3 className="font-semibold mt-4">{task.title}</h3>
+      <h3 className="font-semibold mt-4">
+        {task.title}
+      </h3>
 
-      <div className="flex items-center justify-between mt-6">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">
-            {task.assignee?.charAt(0)}
-          </div>
-
-          <span className="text-sm">{task.assignee}</span>
+      <div className="flex items-center mt-6 gap-2">
+        <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">
+          {task.assignee
+            ? task.assignee.charAt(0)
+            : "?"}
         </div>
+
+        <span className="text-sm">
+          {task.assignee || "Unassigned"}
+        </span>
       </div>
     </div>
   );

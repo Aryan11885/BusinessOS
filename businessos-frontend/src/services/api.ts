@@ -432,7 +432,15 @@ export async function deleteProject(
     }
   );
 
-  return response.json();
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.detail || "Failed to delete project"
+    );
+  }
+
+  return data;
 }
 
 export async function getTasks() {
