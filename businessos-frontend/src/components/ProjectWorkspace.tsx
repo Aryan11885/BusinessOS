@@ -13,6 +13,16 @@ type Props = {
 export default function ProjectWorkspace({ project, tasks }: Props) {
   const [showModal, setShowModal] = useState(false);
 
+  const totalTasks = tasks.length;
+
+  const completedTasks = tasks.filter((task) => task.status === "DONE").length;
+
+  const inProgressTasks = tasks.filter(
+    (task) => task.status === "IN_PROGRESS",
+  ).length;
+
+  const pendingTasks = tasks.filter((task) => task.status === "TODO").length;
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -36,6 +46,28 @@ export default function ProjectWorkspace({ project, tasks }: Props) {
 
       <div className="bg-white rounded-xl shadow p-6">
         <KanbanBoard tasks={tasks} />
+      </div>
+
+      <div className="grid grid-cols-4 gap-4">
+        <div className="bg-white rounded-xl shadow p-5">
+          <h3>Total Tasks</h3>
+          <p className="text-3xl font-bold mt-3">{totalTasks}</p>
+        </div>
+
+        <div className="bg-white rounded-xl shadow p-5">
+          <h3>Completed</h3>
+          <p className="text-3xl font-bold mt-3">{completedTasks}</p>
+        </div>
+
+        <div className="bg-white rounded-xl shadow p-5">
+          <h3>In Progress</h3>
+          <p className="text-3xl font-bold mt-3">{inProgressTasks}</p>
+        </div>
+
+        <div className="bg-white rounded-xl shadow p-5">
+          <h3>Pending</h3>
+          <p className="text-3xl font-bold mt-3">{pendingTasks}</p>
+        </div>
       </div>
 
       {showModal && (
