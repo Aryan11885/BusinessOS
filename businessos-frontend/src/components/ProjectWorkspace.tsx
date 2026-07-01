@@ -43,10 +43,10 @@ export default function ProjectWorkspace({ project, tasks }: Props) {
         </div>
 
         <div className="flex flex-wrap gap-3 shrink-0">
-          <a>
-            href={`/projects/${project.id}/edit`}
-            className="inline-flex items-center gap-2 bg-white border border-slate-200 text-slate-700 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
           
+          <a href={`/projects/${project.id}/edit`}
+            className="inline-flex items-center gap-2 bg-white border border-slate-200 text-slate-700 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+          >
             <Pencil className="w-4 h-4" />
             Edit Project
           </a>
