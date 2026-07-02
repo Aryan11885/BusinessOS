@@ -2,10 +2,14 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import AppLayout from "@/components/AppLayout";
 import { createCustomer } from "@/services/api";
+import { ArrowLeft, UserPlus, Loader2 } from "lucide-react";
 
 export default function NewCustomerPage() {
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
     company_name: "",
@@ -14,79 +18,118 @@ export default function NewCustomerPage() {
     phone: "",
   });
 
-  function handleChange(
-    e: React.ChangeEvent<HTMLInputElement>
-  ) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   }
 
-  async function handleSubmit(
-    e: React.FormEvent
-  ) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    setIsSubmitting(true);
 
-    await createCustomer({
-      organization_id: 1,
-      proposal_id: 1,
+    try {
+      await createCustomer({
+        organization_id: 1,
+        proposal_id: 1,
+        company_name: formData.company_name,
+        contact_name: formData.contact_name,
+        email: formData.email,
+        phone: formData.phone,
+        status: "ACTIVE",
+      });
 
-      company_name: formData.company_name,
-      contact_name: formData.contact_name,
-      email: formData.email,
-      phone: formData.phone,
-
-      status: "ACTIVE",
-    });
-
-    router.push("/customers");
+      router.push("/customers");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold mb-6">
-        New Customer
-      </h1>
-
-      <form
-        onSubmit={handleSubmit}
-        className="space-y-4"
-      >
-        <input
-          name="company_name"
-          placeholder="Company"
-          onChange={handleChange}
-          className="border p-3 rounded w-full"
-        />
-
-        <input
-          name="contact_name"
-          placeholder="Contact Name"
-          onChange={handleChange}
-          className="border p-3 rounded w-full"
-        />
-
-        <input
-          name="email"
-          placeholder="Email"
-          onChange={handleChange}
-          className="border p-3 rounded w-full"
-        />
-
-        <input
-          name="phone"
-          placeholder="Phone"
-          onChange={handleChange}
-          className="border p-3 rounded w-full"
-        />
-
-        <button
-          className="bg-blue-600 text-white px-5 py-3 rounded"
+    <AppLayout>
+      <div className="max-w-2xl">
+        <Link
+          href="/customers"
+          className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700 transition-colors mb-4"
         >
-          Create Customer
-        </button>
-      </form>
-    </div>
+          <ArrowLeft className="w-4 h-4" />
+          Back to Customers
+        </Link>
+
+        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-6">
+          New Customer
+        </h1>
+
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white rounded-xl shadow-sm border border-slate-100 p-6 sm:p-8 space-y-4"
+        >
+          <div>
+            <label className="block mb-1.5 text-sm font-medium text-slate-700">
+              Company Name
+            </label>
+            <input
+              name="company_name"
+              placeholder="Acme Inc."
+              required
+              onChange={handleChange}
+              className="border border-slate-200 rounded-lg w-full p-3 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            />
+          </div>
+
+          <div>
+            <label className="block mb-1.5 text-sm font-medium text-slate-700">
+              Contact Name
+            </label>
+            <input
+              name="contact_name"
+              placeholder="Jane Doe"
+              required
+              onChange={handleChange}
+              className="border border-slate-200 rounded-lg w-full p-3 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block mb-1.5 text-sm font-medium text-slate-700">
+                Email
+              </label>
+              <input
+                name="email"
+                type="email"
+                placeholder="jane@acme.com"
+                required
+                onChange={handleChange}
+                className="border border-slate-200 rounded-lg w-full p-3 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              />
+            </div>
+
+            <div>
+              <label className="block mb-1.5 text-sm font-medium text-slate-700">
+                Phone
+              </label>
+              <input
+                name="phone"
+                placeholder="+91 98765 43210"
+                onChange={handleChange}
+                className="border border-slate-200 rounded-lg w-full p-3 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              />
+            </div>
+          </div>
+
+          <div className="pt-2">
+            <button
+              disabled={isSubmitting}
+              className="inline-flex items-center justify-center gap-2 bg-indigo-600 text-white px-5 py-3 rounded-lg text-sm font-medium transition-colors hover:bg-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
+            >
+              {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <UserPlus className="w-4 h-4" />}
+              {isSubmitting ? "Creating..." : "Create Customer"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </AppLayout>
   );
 }
