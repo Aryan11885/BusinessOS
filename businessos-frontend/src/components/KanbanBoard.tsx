@@ -34,11 +34,11 @@ export default function KanbanBoard({ tasks, onTaskClick }: Props) {
   ];
 
   return (
-    <div className="flex lg:grid lg:grid-cols-4 gap-4 overflow-x-auto pb-2 -mx-1 px-1 snap-x snap-mandatory lg:overflow-visible">
+    <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
       {columns.map((column) => (
         <div
           key={column.title}
-          className="bg-slate-50 border border-slate-100 rounded-xl p-4 min-h-[400px] sm:min-h-[500px] shrink-0 w-[80vw] xs:w-72 sm:w-80 lg:w-auto snap-start"
+          className="bg-slate-50 border border-slate-100 rounded-xl p-4 lg:min-h-[500px] w-full"
         >
           <h2 className="font-semibold text-sm text-slate-700 mb-4 flex items-center justify-between">
             <span className="flex items-center gap-2">
