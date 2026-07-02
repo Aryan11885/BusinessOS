@@ -393,14 +393,21 @@ export async function createProject(
     {
       method: "POST",
       headers: {
-        "Content-Type":
-          "application/json",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     }
   );
 
-  return response.json();
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      result.detail || "Failed to create project"
+    );
+  }
+
+  return result;
 }
 
 export async function updateProject(
@@ -412,14 +419,21 @@ export async function updateProject(
     {
       method: "PUT",
       headers: {
-        "Content-Type":
-          "application/json",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     }
   );
 
-  return response.json();
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      result.detail || "Failed to update project"
+    );
+  }
+
+  return result;
 }
 
 export async function deleteProject(

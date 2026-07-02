@@ -1,7 +1,5 @@
 import AppLayout from "@/components/AppLayout";
 import { getProjectById, getTasks } from "@/services/api";
-import ProgressBar from "@/components/ProgressBar";
-import KanbanBoard from "@/components/KanbanBoard";
 import ProjectWorkspace from "@/components/ProjectWorkspace";
 
 type Props = {
