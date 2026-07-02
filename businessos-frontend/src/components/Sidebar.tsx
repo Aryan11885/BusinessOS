@@ -22,7 +22,6 @@ const NAV_ITEMS = [
   { label: "Proposals", href: "/proposals", icon: FileText },
   { label: "Projects", href: "/projects", icon: FolderKanban },
   { label: "Customers", href: "/customers", icon: Building2 },
-  { label: "Tasks", href: "#", icon: CheckSquare },
   { label: "Settings", href: "#", icon: Settings },
 ];
 
