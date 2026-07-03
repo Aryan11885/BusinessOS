@@ -3,16 +3,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-import {
-  updatePayment,
-  deletePayment,
-} from "@/services/api";
+import { updatePayment, deletePayment } from "@/services/api";
 
-import {
-  Trash2,
-  Save,
-  Loader2,
-} from "lucide-react";
+import { Trash2, Save, Loader2 } from "lucide-react";
 
 type Props = {
   payment: any;
@@ -55,7 +48,7 @@ export default function EditPaymentForm({ payment }: Props) {
 
   async function handleDelete() {
     const confirmed = window.confirm(
-      "Are you sure you want to delete this payment?"
+      "Are you sure you want to delete this payment?",
     );
 
     if (!confirmed) return;

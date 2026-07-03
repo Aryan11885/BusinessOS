@@ -13,9 +13,7 @@ type Props = {
   }>;
 };
 
-export default async function EditPaymentPage({
-  params,
-}: Props) {
+export default async function EditPaymentPage({ params }: Props) {
   const { id } = await params;
 
   const payment = await getPaymentById(id);
@@ -23,9 +21,7 @@ export default async function EditPaymentPage({
   return (
     <AppLayout>
       <div className="max-w-3xl mx-auto">
-
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-8">
-
           <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">
             Edit Payment
           </h1>
@@ -37,13 +33,9 @@ export default async function EditPaymentPage({
             <ArrowLeft className="w-4 h-4" />
             Back
           </Link>
-
         </div>
 
-        <EditPaymentForm
-          payment={payment}
-        />
-
+        <EditPaymentForm payment={payment} />
       </div>
     </AppLayout>
   );
