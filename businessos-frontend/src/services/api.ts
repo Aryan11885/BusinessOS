@@ -542,3 +542,107 @@ export async function createTask(data: any) {
 
   return response.json();
 }
+
+export async function getInvoices() {
+  const response = await fetch(
+    `${API_URL}/invoices`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch invoices");
+  }
+
+  return response.json();
+}
+
+export async function getInvoiceById(
+  id: string
+) {
+  const response = await fetch(
+    `${API_URL}/invoices/${id}`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch invoice");
+  }
+
+  return response.json();
+}
+
+export async function createInvoice(
+  data: any
+) {
+  const response = await fetch(
+    `${API_URL}/invoices`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  );
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      result.detail || "Failed to create invoice"
+    );
+  }
+
+  return result;
+}
+
+export async function updateInvoice(
+  id: string,
+  data: any
+) {
+  const response = await fetch(
+    `${API_URL}/invoices/${id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  );
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      result.detail || "Failed to update invoice"
+    );
+  }
+
+  return result;
+}
+
+export async function deleteInvoice(
+  id: string
+) {
+  const response = await fetch(
+    `${API_URL}/invoices/${id}`,
+    {
+      method: "DELETE",
+    }
+  );
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      result.detail || "Failed to delete invoice"
+    );
+  }
+
+  return result;
+}

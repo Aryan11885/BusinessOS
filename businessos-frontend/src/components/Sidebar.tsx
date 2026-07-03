@@ -10,7 +10,7 @@ import {
   FileText,
   FolderKanban,
   Building2,
-  CheckSquare,
+  Receipt,
   Settings,
   X,
 } from "lucide-react";
@@ -22,6 +22,7 @@ const NAV_ITEMS = [
   { label: "Proposals", href: "/proposals", icon: FileText },
   { label: "Projects", href: "/projects", icon: FolderKanban },
   { label: "Customers", href: "/customers", icon: Building2 },
+  { label: "Invoices", href: "/invoices", icon: Receipt },
   { label: "Settings", href: "#", icon: Settings },
 ];
 
