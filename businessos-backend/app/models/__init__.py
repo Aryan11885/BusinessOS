@@ -9,3 +9,4 @@ from app.models.proposal import Proposal
 from app.models.customer import Customer
 from app.models.project import Project
 from app.models.task import Task
+from .invoice import Invoice

@@ -29,6 +29,10 @@ from app.api.tasks import (
     router as tasks_router
 )
 
+from app.api.invoices import (
+    router as invoices_router,
+)
+
 
 # CORS
 app.add_middleware(
@@ -48,6 +52,7 @@ app.include_router(proposals_router)
 app.include_router(customers_router)
 app.include_router(projects_router)
 app.include_router(tasks_router)
+app.include_router(invoices_router)
 
 
 @app.get("/")
@@ -55,4 +60,6 @@ def root():
     return {
         "message": "BusinessOS API Running"
     }
+
+
 
