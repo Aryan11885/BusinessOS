@@ -33,6 +33,10 @@ from app.api.invoices import (
     router as invoices_router,
 )
 
+from app.api.payments import (
+    router as payments_router,
+)
+
 
 # CORS
 app.add_middleware(
@@ -53,6 +57,7 @@ app.include_router(customers_router)
 app.include_router(projects_router)
 app.include_router(tasks_router)
 app.include_router(invoices_router)
+app.include_router(payments_router) 
 
 
 @app.get("/")

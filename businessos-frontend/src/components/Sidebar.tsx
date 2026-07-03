@@ -11,6 +11,7 @@ import {
   FolderKanban,
   Building2,
   Receipt,
+  CreditCard,
   Settings,
   X,
 } from "lucide-react";
@@ -23,6 +24,7 @@ const NAV_ITEMS = [
   { label: "Projects", href: "/projects", icon: FolderKanban },
   { label: "Customers", href: "/customers", icon: Building2 },
   { label: "Invoices", href: "/invoices", icon: Receipt },
+  { label: "Payments", href: "/payments", icon: CreditCard },
   { label: "Settings", href: "#", icon: Settings },
 ];
 

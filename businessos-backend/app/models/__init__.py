@@ -10,3 +10,4 @@ from app.models.customer import Customer
 from app.models.project import Project
 from app.models.task import Task
 from .invoice import Invoice
+from app.models.payment import Payment

@@ -646,3 +646,112 @@ export async function deleteInvoice(
 
   return result;
 }
+
+export async function getPayments() {
+  const response = await fetch(
+    `${API_URL}/payments`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch payments");
+  }
+
+  return response.json();
+}
+
+export async function getPaymentById(
+  id: string
+) {
+  const response = await fetch(
+    `${API_URL}/payments/${id}`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch payment");
+  }
+
+  return response.json();
+}
+
+export async function createPayment(
+  data: any
+) {
+  const response = await fetch(
+    `${API_URL}/payments`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type":
+          "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  );
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      result.detail ||
+      "Failed to create payment"
+    );
+  }
+
+  return result;
+}
+
+export async function updatePayment(
+  id: string,
+  data: any
+) {
+  const response = await fetch(
+    `${API_URL}/payments/${id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type":
+          "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  );
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      result.detail ||
+      "Failed to update payment"
+    );
+  }
+
+  return result;
+}
+
+export async function deletePayment(
+  id: string
+) {
+  const response = await fetch(
+    `${API_URL}/payments/${id}`,
+    {
+      method: "DELETE",
+    }
+  );
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      result.detail ||
+      "Failed to delete payment"
+    );
+  }
+
+  return result;
+}
