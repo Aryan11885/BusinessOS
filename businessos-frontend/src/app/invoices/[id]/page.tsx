@@ -69,7 +69,7 @@ export default async function InvoiceDetailsPage({ params }: Props) {
           </div>
 
           <div className="mt-8">
-            <h3 className="text-lg font-semibold text-slate-900 mb-2">Notes</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-2">Notes - </h3>
 
             <div className="border border-slate-200 rounded-lg p-4 bg-slate-50 min-h-[120px] text-sm text-slate-600">
               {invoice.notes || "No notes added."}
