@@ -41,7 +41,7 @@ export default function NewLeadPage() {
         phone: formData.phone,
         source_id: 1,
         status_id: 1,
-        owner_user_id: 4,
+        owner_user_id: 1,
         lead_value: 100000,
         city: "Prayagraj",
         state: "Uttar Pradesh",

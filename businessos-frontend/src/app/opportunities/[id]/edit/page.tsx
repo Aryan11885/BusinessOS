@@ -56,7 +56,7 @@ export default function EditOpportunityPage() {
       await updateOpportunity(params.id as string, {
         organization_id: 1,
         lead_id: 3,
-        owner_user_id: 4,
+        owner_user_id: 1,
         title: formData.title,
         value: Number(formData.value),
         stage: formData.stage,
