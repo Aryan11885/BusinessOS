@@ -32,7 +32,8 @@ An AI-powered Business CRM & ERP platform for SMEs.
 - Invoice Management
 - Payment Management
 
-- Updated the CI/CD configuration
+- _Last updated: CI/CD pipeline completed._
+Project deployment verified on Railway and Vercel.
 
 ## Upcoming Modules
 
