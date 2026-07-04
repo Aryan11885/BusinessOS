@@ -1,4 +1,5 @@
 import AppLayout from "@/components/AppLayout";
+import Link from "next/link";
 import {
   Users,
   UserCheck,
@@ -61,50 +62,56 @@ export default function DashboardPage() {
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <button
-            type="button"
+          <Link
+            href="/leads/new"
             className="inline-flex items-center gap-1.5 rounded-lg bg-slate-900 px-3.5 py-2 text-sm font-medium text-white transition-colors hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-slate-900"
           >
             <Plus className="w-4 h-4" />
             New Lead
-          </button>
-          <button
-            type="button"
+          </Link>
+          <Link
+            href="/proposals/new"
             className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-slate-900"
           >
             <FileText className="w-4 h-4" />
             New Proposal
-          </button>
+          </Link>
         </div>
       </div>
 
       {/* Stat cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {STATS.map(({ label, value, isCurrency, icon: Icon, iconBg, iconColor }) => (
-          <div
-            key={label}
-            className="group bg-white rounded-xl p-5 shadow-sm border border-slate-100 transition-all hover:shadow-md hover:-translate-y-0.5"
-          >
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-medium uppercase tracking-wide text-slate-500">
-                {label}
-              </span>
-              <div className={`w-9 h-9 rounded-lg ${iconBg} flex items-center justify-center`}>
-                <Icon className={`w-4.5 h-4.5 ${iconColor}`} />
+        {STATS.map(
+          ({ label, value, isCurrency, icon: Icon, iconBg, iconColor }) => (
+            <div
+              key={label}
+              className="group bg-white rounded-xl p-5 shadow-sm border border-slate-100 transition-all hover:shadow-md hover:-translate-y-0.5"
+            >
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-xs font-medium uppercase tracking-wide text-slate-500">
+                  {label}
+                </span>
+                <div
+                  className={`w-9 h-9 rounded-lg ${iconBg} flex items-center justify-center`}
+                >
+                  <Icon className={`w-4.5 h-4.5 ${iconColor}`} />
+                </div>
               </div>
+              <p className="text-3xl font-bold text-slate-900 tabular-nums">
+                {isCurrency ? `₹${formatINR(value)}` : value}
+              </p>
             </div>
-            <p className="text-3xl font-bold text-slate-900 tabular-nums">
-              {isCurrency ? `₹${formatINR(value)}` : value}
-            </p>
-          </div>
-        ))}
+          ),
+        )}
       </div>
 
       {/* Chart + Recent Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-6">
         <div className="lg:col-span-2 bg-white rounded-xl p-5 shadow-sm border border-slate-100">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-semibold text-slate-900">Revenue Overview</h2>
+            <h2 className="text-sm font-semibold text-slate-900">
+              Revenue Overview
+            </h2>
             <TrendingUp className="w-4 h-4 text-slate-400" />
           </div>
           <div className="h-56 sm:h-64 rounded-lg bg-slate-50 border border-dashed border-slate-200 flex items-center justify-center">
@@ -114,7 +121,9 @@ export default function DashboardPage() {
 
         <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-100">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-semibold text-slate-900">Recent Activity</h2>
+            <h2 className="text-sm font-semibold text-slate-900">
+              Recent Activity
+            </h2>
             <Clock className="w-4 h-4 text-slate-400" />
           </div>
           <div className="flex flex-col items-center justify-center text-center py-10">
