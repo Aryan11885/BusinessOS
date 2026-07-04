@@ -34,5 +34,10 @@ jobs:
           pip install -r requirements.txt
 
       - name: Verify FastAPI Imports
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          ALGORITHM: ${{ secrets.ALGORITHM }}
+          ACCESS_TOKEN_EXPIRE_MINUTES: ${{ secrets.ACCESS_TOKEN_EXPIRE_MINUTES }}
         run: |
           python -c "from app.main import app; print('FastAPI app imported successfully')"
