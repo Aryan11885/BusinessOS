@@ -66,5 +66,9 @@ def root():
         "message": "BusinessOS API Running"
     }
 
+@app.get("/cors-test")
+def cors_test():
+    return {"status": "new deployment"}
+
 
 
