@@ -32,7 +32,7 @@ An AI-powered Business CRM & ERP platform for SMEs.
 - Invoice Management
 - Payment Management
 
-- Updated CI/CD configuration
+- Updated the CI/CD configuration
 
 ## Upcoming Modules
 
