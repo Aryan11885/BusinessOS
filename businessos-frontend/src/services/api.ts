@@ -356,7 +356,7 @@ export async function deleteCustomer(
 
 export async function getProjects() {
   const response = await fetch(
-    `${API_URL}/projects`,
+    `${API_URL}/projects/`,
     {
       cache: "no-store",
     }
