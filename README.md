@@ -29,10 +29,12 @@ An AI-powered Business CRM & ERP platform for SMEs.
 - Project Statistics
 - Add/Edit/Delete Tasks
 - Edit Projects
+- Invoice Management
+- Payment Management
+
+- Updated CI/CD configuration
 
 ## Upcoming Modules
 
-- Invoice Management
-- Payment Management
 - Dashboard Analytics
 - AI Business Assistant
