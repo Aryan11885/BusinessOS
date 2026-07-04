@@ -34,6 +34,7 @@ An AI-powered Business CRM & ERP platform for SMEs.
 
 - _Last updated: CI/CD pipeline completed._
 Project deployment verified on Railway and Vercel.
+(Learning GitHub Pull Requests.)
 
 ## Upcoming Modules
 
