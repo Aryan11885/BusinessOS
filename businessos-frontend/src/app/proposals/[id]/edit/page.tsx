@@ -7,7 +7,8 @@ import AppLayout from "@/components/AppLayout";
 import { updateProposal } from "@/services/api";
 import { ArrowLeft, Save, Loader2 } from "lucide-react";
 
-const API_URL = "http://127.0.0.1:8000";
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
 
 export default function EditProposalPage() {
   const params = useParams();
