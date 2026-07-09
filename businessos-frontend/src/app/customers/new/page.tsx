@@ -32,7 +32,7 @@ export default function NewCustomerPage() {
     try {
       await createCustomer({
         organization_id: 1,
-        proposal_id: 1,
+        proposal_id: 7,
         company_name: formData.company_name,
         contact_name: formData.contact_name,
         email: formData.email,
