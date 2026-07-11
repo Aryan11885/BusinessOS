@@ -390,7 +390,7 @@ export async function createProject(
   data: any
 ) {
   const response = await fetch(
-    `${API_URL}/projects`,
+    `${API_URL}/projects/`,
     {
       method: "POST",
       headers: {

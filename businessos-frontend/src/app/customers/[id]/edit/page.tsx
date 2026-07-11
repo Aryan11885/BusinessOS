@@ -14,6 +14,9 @@ export default function EditCustomerPage() {
   const [loading, setLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
 
+  // keep the customer's existing proposal_id so we don't overwrite it with a wrong value
+  const [proposalId, setProposalId] = useState<number | null>(null);
+
   const [formData, setFormData] = useState({
     company_name: "",
     contact_name: "",
@@ -33,6 +36,7 @@ export default function EditCustomerPage() {
         phone: customer.phone,
         status: customer.status,
       });
+      setProposalId(customer.proposal_id);
 
       setLoading(false);
     }
@@ -53,8 +57,9 @@ export default function EditCustomerPage() {
 
     try {
       await updateCustomer(params.id as string, {
+        // TODO: replace with logged-in user's organization_id once frontend auth is added
         organization_id: 1,
-        proposal_id: 1,
+        proposal_id: proposalId,
         ...formData,
       });
 

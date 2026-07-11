@@ -17,9 +17,15 @@ export default function NewLeadPage() {
     company_name: "",
     email: "",
     phone: "",
+    lead_value: "",
+    city: "",
+    state: "",
+    remarks: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -42,10 +48,10 @@ export default function NewLeadPage() {
         source_id: 1,
         status_id: 1,
         owner_user_id: 1,
-        lead_value: 100000,
-        city: "Prayagraj",
-        state: "Uttar Pradesh",
-        remarks: "Created from Frontend",
+        lead_value: Number(formData.lead_value),
+        city: formData.city,
+        state: formData.state,
+        remarks: formData.remarks,
       });
 
       router.push("/leads");
@@ -142,6 +148,66 @@ export default function NewLeadPage() {
                 className="w-full border border-slate-200 rounded-lg p-3 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               />
             </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block mb-1.5 text-sm font-medium text-slate-700">
+                City
+              </label>
+              <input
+                name="city"
+                placeholder="e.g. Prayagraj"
+                required
+                value={formData.city}
+                onChange={handleChange}
+                className="w-full border border-slate-200 rounded-lg p-3 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              />
+            </div>
+
+            <div>
+              <label className="block mb-1.5 text-sm font-medium text-slate-700">
+                State
+              </label>
+              <input
+                name="state"
+                placeholder="e.g. Uttar Pradesh"
+                required
+                value={formData.state}
+                onChange={handleChange}
+                className="w-full border border-slate-200 rounded-lg p-3 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block mb-1.5 text-sm font-medium text-slate-700">
+              Lead Value (₹)
+            </label>
+            <input
+              name="lead_value"
+              type="number"
+              min={0}
+              placeholder="e.g. 100000"
+              required
+              value={formData.lead_value}
+              onChange={handleChange}
+              className="w-full border border-slate-200 rounded-lg p-3 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            />
+          </div>
+
+          <div>
+            <label className="block mb-1.5 text-sm font-medium text-slate-700">
+              Remarks
+            </label>
+            <textarea
+              name="remarks"
+              rows={3}
+              placeholder="Any notes about this lead..."
+              value={formData.remarks}
+              onChange={handleChange}
+              className="w-full border border-slate-200 rounded-lg p-3 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            />
           </div>
 
           <div className="pt-2">

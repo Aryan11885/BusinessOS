@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 import AppLayout from "@/components/AppLayout";
-import { createProject } from "@/services/api";
+import { createProject, getCustomers } from "@/services/api";
 
 import {
   ArrowLeft,
@@ -18,13 +18,21 @@ export default function NewProjectPage() {
 
   const [isSubmitting, setIsSubmitting] =
     useState(false);
+  const [customers, setCustomers] = useState<any[]>([]);
+  const [loadingCustomers, setLoadingCustomers] = useState(true);
 
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    customer_id: "1",
+    customer_id: "",
     status: "NOT_STARTED",
   });
+
+  useEffect(() => {
+    getCustomers()
+      .then(setCustomers)
+      .finally(() => setLoadingCustomers(false));
+  }, []);
 
   function handleChange(
     e: React.ChangeEvent<
@@ -129,16 +137,26 @@ export default function NewProjectPage() {
             <div>
 
               <label className="block mb-2 text-sm font-medium text-slate-700">
-                Customer ID
+                Customer
               </label>
 
-              <input
+              <select
                 required
                 name="customer_id"
                 value={formData.customer_id}
                 onChange={handleChange}
-                className="border border-slate-200 rounded-lg w-full p-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-              />
+                disabled={loadingCustomers}
+                className="border border-slate-200 rounded-lg w-full p-3 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none disabled:bg-slate-50 disabled:text-slate-400"
+              >
+                <option value="" disabled>
+                  {loadingCustomers ? "Loading..." : "Select a customer"}
+                </option>
+                {customers.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.company_name || `Customer #${c.id}`}
+                  </option>
+                ))}
+              </select>
 
             </div>
 
@@ -182,7 +200,7 @@ export default function NewProjectPage() {
             </Link>
 
             <button
-              disabled={isSubmitting}
+              disabled={isSubmitting || loadingCustomers}
               className="inline-flex items-center gap-2 bg-indigo-600 text-white px-5 py-3 rounded-lg hover:bg-indigo-700 disabled:opacity-60"
             >
               {isSubmitting ? (

@@ -4,11 +4,8 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import AppLayout from "@/components/AppLayout";
-import { updateLead } from "@/services/api";
+import { getLeadById, updateLead } from "@/services/api";
 import { ArrowLeft, Save, Loader2 } from "lucide-react";
-
-const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
 
 export default function EditLeadPage() {
   const params = useParams();
@@ -23,12 +20,17 @@ export default function EditLeadPage() {
     company_name: "",
     email: "",
     phone: "",
+    city: "",
+    state: "",
+    lead_value: "",
+    remarks: "",
   });
 
   useEffect(() => {
     async function fetchLead() {
-      const response = await fetch(`${API_URL}/leads/${params.id}`);
-      const data = await response.json();
+      // use the shared api.ts helper (with correct https base URL) instead of a
+      // separate fetch call, so this page can never point at the wrong backend
+      const data = await getLeadById(params.id as string);
 
       setFormData({
         first_name: data.first_name || "",
@@ -36,6 +38,10 @@ export default function EditLeadPage() {
         company_name: data.company_name || "",
         email: data.email || "",
         phone: data.phone || "",
+        city: data.city || "",
+        state: data.state || "",
+        lead_value: data.lead_value?.toString() || "",
+        remarks: data.remarks || "",
       });
 
       setLoading(false);
@@ -44,7 +50,9 @@ export default function EditLeadPage() {
     fetchLead();
   }, [params.id]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -67,10 +75,10 @@ export default function EditLeadPage() {
         source_id: 1,
         status_id: 1,
         owner_user_id: 1,
-        lead_value: 500000,
-        city: "Prayagraj",
-        state: "Uttar Pradesh",
-        remarks: "Updated From Frontend",
+        lead_value: Number(formData.lead_value),
+        city: formData.city,
+        state: formData.state,
+        remarks: formData.remarks,
       });
 
       router.push("/leads");
@@ -176,6 +184,59 @@ export default function EditLeadPage() {
                 className="w-full border border-slate-200 rounded-lg p-3 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               />
             </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block mb-1.5 text-sm font-medium text-slate-700">
+                City
+              </label>
+              <input
+                name="city"
+                value={formData.city}
+                onChange={handleChange}
+                className="w-full border border-slate-200 rounded-lg p-3 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              />
+            </div>
+
+            <div>
+              <label className="block mb-1.5 text-sm font-medium text-slate-700">
+                State
+              </label>
+              <input
+                name="state"
+                value={formData.state}
+                onChange={handleChange}
+                className="w-full border border-slate-200 rounded-lg p-3 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block mb-1.5 text-sm font-medium text-slate-700">
+              Lead Value (₹)
+            </label>
+            <input
+              name="lead_value"
+              type="number"
+              min={0}
+              value={formData.lead_value}
+              onChange={handleChange}
+              className="w-full border border-slate-200 rounded-lg p-3 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            />
+          </div>
+
+          <div>
+            <label className="block mb-1.5 text-sm font-medium text-slate-700">
+              Remarks
+            </label>
+            <textarea
+              name="remarks"
+              rows={3}
+              value={formData.remarks}
+              onChange={handleChange}
+              className="w-full border border-slate-200 rounded-lg p-3 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            />
           </div>
 
           <div className="pt-2">

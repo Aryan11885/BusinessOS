@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 import AppLayout from "@/components/AppLayout";
-import { createPayment } from "@/services/api";
+import { createPayment, getInvoices } from "@/services/api";
 
 import { ArrowLeft, CreditCard, Loader2 } from "lucide-react";
 
@@ -13,9 +13,11 @@ export default function NewPaymentPage() {
   const router = useRouter();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [invoices, setInvoices] = useState<any[]>([]);
+  const [loadingInvoices, setLoadingInvoices] = useState(true);
 
   const [formData, setFormData] = useState({
-    invoice_id: "1",
+    invoice_id: "",
     amount: "",
     payment_method: "UPI",
     transaction_id: "",
@@ -23,6 +25,12 @@ export default function NewPaymentPage() {
     status: "SUCCESS",
     notes: "",
   });
+
+  useEffect(() => {
+    getInvoices()
+      .then(setInvoices)
+      .finally(() => setLoadingInvoices(false));
+  }, []);
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
@@ -84,14 +92,25 @@ export default function NewPaymentPage() {
         >
           <div>
             <label className="block mb-1.5 text-sm font-medium text-slate-700">
-              Invoice ID
+              Invoice
             </label>
-            <input
+            <select
               name="invoice_id"
+              required
               value={formData.invoice_id}
               onChange={handleChange}
-              className="border border-slate-200 rounded-lg w-full p-3 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-            />
+              disabled={loadingInvoices}
+              className="border border-slate-200 rounded-lg w-full p-3 text-sm bg-white transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent disabled:bg-slate-50 disabled:text-slate-400"
+            >
+              <option value="" disabled>
+                {loadingInvoices ? "Loading..." : "Select an invoice"}
+              </option>
+              {invoices.map((inv) => (
+                <option key={inv.id} value={inv.id}>
+                  {inv.invoice_number || `Invoice #${inv.id}`}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div>
@@ -182,7 +201,7 @@ export default function NewPaymentPage() {
           </div>
 
           <button
-            disabled={isSubmitting}
+            disabled={isSubmitting || loadingInvoices}
             className="inline-flex items-center justify-center gap-2 bg-indigo-600 text-white px-5 py-3 rounded-lg text-sm font-medium transition-colors hover:bg-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
           >
             {isSubmitting ? (

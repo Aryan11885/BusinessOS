@@ -1,24 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import AppLayout from "@/components/AppLayout";
-import { createCustomer } from "@/services/api";
+import { createCustomer, getProposals } from "@/services/api";
 import { ArrowLeft, UserPlus, Loader2 } from "lucide-react";
 
 export default function NewCustomerPage() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [proposals, setProposals] = useState<any[]>([]);
+  const [loadingProposals, setLoadingProposals] = useState(true);
 
   const [formData, setFormData] = useState({
     company_name: "",
     contact_name: "",
     email: "",
     phone: "",
+    proposal_id: "",
   });
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+  useEffect(() => {
+    getProposals()
+      .then((data) => setProposals(data))
+      .catch(() => setProposals([]))
+      .finally(() => setLoadingProposals(false));
+  }, []);
+
+  function handleChange(
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -31,8 +43,9 @@ export default function NewCustomerPage() {
 
     try {
       await createCustomer({
+        // TODO: replace with logged-in user's organization_id once frontend auth is added
         organization_id: 1,
-        proposal_id: 7,
+        proposal_id: Number(formData.proposal_id),
         company_name: formData.company_name,
         contact_name: formData.contact_name,
         email: formData.email,
@@ -65,6 +78,34 @@ export default function NewCustomerPage() {
           onSubmit={handleSubmit}
           className="bg-white rounded-xl shadow-sm border border-slate-100 p-6 sm:p-8 space-y-4"
         >
+          <div>
+            <label className="block mb-1.5 text-sm font-medium text-slate-700">
+              Proposal
+            </label>
+            <select
+              name="proposal_id"
+              required
+              value={formData.proposal_id}
+              onChange={handleChange}
+              disabled={loadingProposals}
+              className="border border-slate-200 rounded-lg w-full p-3 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent disabled:bg-slate-50 disabled:text-slate-400"
+            >
+              <option value="" disabled>
+                {loadingProposals ? "Loading proposals..." : "Select a proposal"}
+              </option>
+              {proposals.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.title || p.company_name || `Proposal #${p.id}`}
+                </option>
+              ))}
+            </select>
+            {!loadingProposals && proposals.length === 0 && (
+              <p className="mt-1.5 text-xs text-amber-600">
+                No proposals found. Create a proposal first before adding a customer.
+              </p>
+            )}
+          </div>
+
           <div>
             <label className="block mb-1.5 text-sm font-medium text-slate-700">
               Company Name
@@ -121,10 +162,14 @@ export default function NewCustomerPage() {
 
           <div className="pt-2">
             <button
-              disabled={isSubmitting}
+              disabled={isSubmitting || loadingProposals}
               className="inline-flex items-center justify-center gap-2 bg-indigo-600 text-white px-5 py-3 rounded-lg text-sm font-medium transition-colors hover:bg-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
             >
-              {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <UserPlus className="w-4 h-4" />}
+              {isSubmitting ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <UserPlus className="w-4 h-4" />
+              )}
               {isSubmitting ? "Creating..." : "Create Customer"}
             </button>
           </div>

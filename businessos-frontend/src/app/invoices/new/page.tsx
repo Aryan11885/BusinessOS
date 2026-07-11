@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 import AppLayout from "@/components/AppLayout";
-import { createInvoice } from "@/services/api";
+import { createInvoice, getCustomers, getProjects } from "@/services/api";
 
 import {
   ArrowLeft,
@@ -17,10 +17,13 @@ export default function NewInvoicePage() {
   const router = useRouter();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [customers, setCustomers] = useState<any[]>([]);
+  const [projects, setProjects] = useState<any[]>([]);
+  const [loadingOptions, setLoadingOptions] = useState(true);
 
   const [formData, setFormData] = useState({
-    customer_id: "1",
-    project_id: "2",
+    customer_id: "",
+    project_id: "",
     invoice_number: "",
     amount: "",
     tax: "",
@@ -28,6 +31,15 @@ export default function NewInvoicePage() {
     notes: "",
     status: "DRAFT",
   });
+
+  useEffect(() => {
+    Promise.all([getCustomers(), getProjects()])
+      .then(([customersData, projectsData]) => {
+        setCustomers(customersData);
+        setProjects(projectsData);
+      })
+      .finally(() => setLoadingOptions(false));
+  }, []);
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
@@ -108,26 +120,48 @@ export default function NewInvoicePage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block mb-1.5 text-sm font-medium text-slate-700">
-                Customer ID
+                Customer
               </label>
-              <input
+              <select
                 name="customer_id"
+                required
                 value={formData.customer_id}
                 onChange={handleChange}
-                className="border border-slate-200 rounded-lg w-full p-3 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-              />
+                disabled={loadingOptions}
+                className="border border-slate-200 rounded-lg w-full p-3 text-sm bg-white transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent disabled:bg-slate-50 disabled:text-slate-400"
+              >
+                <option value="" disabled>
+                  {loadingOptions ? "Loading..." : "Select a customer"}
+                </option>
+                {customers.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.company_name || `Customer #${c.id}`}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div>
               <label className="block mb-1.5 text-sm font-medium text-slate-700">
-                Project ID
+                Project
               </label>
-              <input
+              <select
                 name="project_id"
+                required
                 value={formData.project_id}
                 onChange={handleChange}
-                className="border border-slate-200 rounded-lg w-full p-3 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-              />
+                disabled={loadingOptions}
+                className="border border-slate-200 rounded-lg w-full p-3 text-sm bg-white transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent disabled:bg-slate-50 disabled:text-slate-400"
+              >
+                <option value="" disabled>
+                  {loadingOptions ? "Loading..." : "Select a project"}
+                </option>
+                {projects.map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {p.name || `Project #${p.id}`}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 
@@ -207,7 +241,7 @@ export default function NewInvoicePage() {
           </div>
 
           <button
-            disabled={isSubmitting}
+            disabled={isSubmitting || loadingOptions}
             className="inline-flex items-center justify-center gap-2 bg-indigo-600 text-white px-5 py-3 rounded-lg text-sm font-medium transition-colors hover:bg-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
           >
             {isSubmitting ? (
