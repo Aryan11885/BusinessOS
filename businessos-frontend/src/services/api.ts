@@ -527,7 +527,7 @@ export async function deleteTask(id: string) {
 
 export async function createTask(data: any) {
   const response = await fetch(
-    `${API_URL}/tasks`,
+    `${API_URL}/tasks/`,
     {
       method: "POST",
       headers: {
