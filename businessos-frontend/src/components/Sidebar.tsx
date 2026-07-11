@@ -19,7 +19,7 @@ import {
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { label: "Leads", href: "/leads", icon: Users },
-  { label: "Pipeline", href: "/pipeline", icon: GitBranch },
+  { label: "Sales Pipeline", href: "/pipeline", icon: GitBranch },
   { label: "Proposals", href: "/proposals", icon: FileText },
   { label: "Projects", href: "/projects", icon: FolderKanban },
   { label: "Customers", href: "/customers", icon: Building2 },
