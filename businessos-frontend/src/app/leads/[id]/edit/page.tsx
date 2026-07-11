@@ -93,7 +93,7 @@ export default function EditLeadPage() {
   if (loading) {
     return (
       <AppLayout>
-        <div className="max-w-xl animate-pulse space-y-5">
+        <div className="max-w-xl mx-auto animate-pulse space-y-5">
           <div className="h-8 w-40 bg-slate-200 rounded" />
           <div className="space-y-3">
             {[...Array(5)].map((_, i) => (
@@ -107,7 +107,7 @@ export default function EditLeadPage() {
 
   return (
     <AppLayout>
-      <div className="max-w-xl">
+      <div className="max-w-xl mx-auto">
         <Link
           href="/leads"
           className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700 transition-colors mb-4"

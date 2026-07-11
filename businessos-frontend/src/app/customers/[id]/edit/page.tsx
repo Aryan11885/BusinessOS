@@ -72,7 +72,7 @@ export default function EditCustomerPage() {
   if (loading) {
     return (
       <AppLayout>
-        <div className="max-w-2xl animate-pulse space-y-5">
+        <div className="max-w-2xl mx-auto animate-pulse space-y-5">
           <div className="h-8 w-48 bg-slate-200 rounded" />
           <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-6 sm:p-8 space-y-4">
             {[...Array(5)].map((_, i) => (
@@ -89,7 +89,7 @@ export default function EditCustomerPage() {
 
   return (
     <AppLayout>
-      <div className="max-w-2xl">
+      <div className="max-w-2xl mx-auto">
         <Link
           href={`/customers/${params.id}`}
           className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700 transition-colors mb-4"

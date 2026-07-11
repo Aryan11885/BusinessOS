@@ -36,7 +36,7 @@ export default async function ProposalDetailsPage({ params }: Props) {
 
   return (
     <AppLayout>
-      <div className="max-w-2xl">
+      <div className="max-w-2xl mx-auto">
         <Link
           href="/proposals"
           className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700 transition-colors mb-4"

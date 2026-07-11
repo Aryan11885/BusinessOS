@@ -66,7 +66,7 @@ export default function NewLeadPage() {
 
   return (
     <AppLayout>
-      <div className="max-w-xl">
+      <div className="max-w-xl mx-auto">
         <Link
           href="/leads"
           className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700 transition-colors mb-4"

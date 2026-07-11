@@ -77,7 +77,7 @@ export default function NewProjectPage() {
 
   return (
     <AppLayout>
-      <div className="max-w-2xl">
+      <div className="max-w-2xl mx-auto">
 
         <Link
           href="/projects"

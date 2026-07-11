@@ -31,7 +31,7 @@ export default async function LeadDetailsPage({ params }: Props) {
 
   return (
     <AppLayout>
-      <div className="max-w-2xl">
+      <div className="max-w-2xl mx-auto">
         <Link
           href="/leads"
           className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700 transition-colors mb-4"

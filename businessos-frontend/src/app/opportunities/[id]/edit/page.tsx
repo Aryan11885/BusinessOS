@@ -74,7 +74,7 @@ export default function EditOpportunityPage() {
   if (loading) {
     return (
       <AppLayout>
-        <div className="max-w-xl animate-pulse space-y-5">
+        <div className="max-w-xl mx-auto animate-pulse space-y-5">
           <div className="h-8 w-56 bg-slate-200 rounded" />
           <div className="space-y-3">
             {[...Array(4)].map((_, i) => (
@@ -88,7 +88,7 @@ export default function EditOpportunityPage() {
 
   return (
     <AppLayout>
-      <div className="max-w-xl">
+      <div className="max-w-xl mx-auto">
         <Link
           href={`/opportunities/${params.id}`}
           className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700 transition-colors mb-4"

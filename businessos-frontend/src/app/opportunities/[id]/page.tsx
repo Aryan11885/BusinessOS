@@ -34,7 +34,7 @@ export default async function OpportunityDetailsPage({ params }: Props) {
 
   return (
     <AppLayout>
-      <div className="max-w-2xl">
+      <div className="max-w-2xl mx-auto">
         <Link
           href="/pipeline"
           className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700 transition-colors mb-4"
