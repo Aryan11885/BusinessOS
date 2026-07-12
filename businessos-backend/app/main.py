@@ -37,6 +37,9 @@ from app.api.payments import (
     router as payments_router,
 )
 
+from app.api.emails import (
+    router as emails_router,
+)
 
 # CORS
 app.add_middleware(
@@ -60,6 +63,7 @@ app.include_router(projects_router)
 app.include_router(tasks_router)
 app.include_router(invoices_router)
 app.include_router(payments_router) 
+app.include_router(emails_router)
 
 
 @app.get("/")
@@ -71,6 +75,4 @@ def root():
 @app.get("/cors-test")
 def cors_test():
     return {"status": "new deployment"}
-
-
 

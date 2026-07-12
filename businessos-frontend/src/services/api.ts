@@ -756,3 +756,23 @@ export async function deletePayment(
 
   return result;
 }
+
+export async function sendEmail(formData: FormData) {
+  const response = await fetch(
+    `${API_URL}/emails/send`,
+    {
+      method: "POST",
+      body: formData,
+    }
+  );
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      result.detail || "Failed to send email"
+    );
+  }
+
+  return result;
+}

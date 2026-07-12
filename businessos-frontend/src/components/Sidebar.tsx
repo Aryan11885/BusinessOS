@@ -13,6 +13,7 @@ import {
   Receipt,
   CreditCard,
   Settings,
+  Mail,
   X,
 } from "lucide-react";
 
@@ -25,6 +26,7 @@ const NAV_ITEMS = [
   { label: "Customers", href: "/customers", icon: Building2 },
   { label: "Invoices", href: "/invoices", icon: Receipt },
   { label: "Payments", href: "/payments", icon: CreditCard },
+  { label: "Business Mail", href: "/business-mail", icon: Mail },
   { label: "Settings", href: "#", icon: Settings },
 ];
 
@@ -102,7 +104,9 @@ export default function Sidebar({
       {/* Backdrop + drawer on mobile */}
       <div
         className={`lg:hidden fixed inset-0 z-40 bg-slate-900/50 transition-opacity duration-200 ${
-          isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          isOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
         }`}
         onClick={onClose}
         aria-hidden="true"
