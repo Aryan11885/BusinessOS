@@ -26,7 +26,7 @@ export default function NewInvoicePage() {
     project_id: "",
     invoice_number: "",
     amount: "",
-    tax: "",
+    tax_percent: "",
     due_date: "",
     notes: "",
     status: "DRAFT",
@@ -50,23 +50,26 @@ export default function NewInvoicePage() {
     });
   }
 
+  // derived values — calculated live from amount + tax percentage
+  const amountNum = Number(formData.amount) || 0;
+  const taxPercentNum = Number(formData.tax_percent) || 0;
+  const taxAmount = (amountNum * taxPercentNum) / 100;
+  const totalAmount = amountNum + taxAmount;
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
     setIsSubmitting(true);
 
     try {
-      const amount = Number(formData.amount);
-      const tax = Number(formData.tax);
-
       await createInvoice({
         organization_id: 1,
         customer_id: Number(formData.customer_id),
         project_id: Number(formData.project_id),
         invoice_number: formData.invoice_number,
-        amount,
-        tax,
-        total_amount: amount + tax,
+        amount: amountNum,
+        tax: taxAmount,
+        total_amount: totalAmount,
         status: formData.status,
         due_date: formData.due_date,
         notes: formData.notes,
@@ -176,6 +179,7 @@ export default function NewInvoicePage() {
                 min={0}
                 placeholder="0"
                 required
+                value={formData.amount}
                 onChange={handleChange}
                 className="border border-slate-200 rounded-lg w-full p-3 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               />
@@ -183,19 +187,39 @@ export default function NewInvoicePage() {
 
             <div>
               <label className="block mb-1.5 text-sm font-medium text-slate-700">
-                Tax (₹)
+                Tax (%)
               </label>
               <input
-                name="tax"
+                name="tax_percent"
                 type="number"
                 min={0}
-                placeholder="0"
+                max={100}
+                step="0.01"
+                placeholder="e.g. 18"
                 required
+                value={formData.tax_percent}
                 onChange={handleChange}
                 className="border border-slate-200 rounded-lg w-full p-3 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               />
             </div>
           </div>
+
+          {(formData.amount || formData.tax_percent) && (
+            <div className="rounded-lg bg-slate-50 border border-slate-100 p-4 text-sm space-y-1.5">
+              <div className="flex justify-between text-slate-500">
+                <span>Amount</span>
+                <span>₹{amountNum.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between text-slate-500">
+                <span>Tax ({taxPercentNum || 0}%)</span>
+                <span>₹{taxAmount.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between font-semibold text-slate-900 pt-1.5 border-t border-slate-200">
+                <span>Total</span>
+                <span>₹{totalAmount.toFixed(2)}</span>
+              </div>
+            </div>
+          )}
 
           <div>
             <label className="block mb-1.5 text-sm font-medium text-slate-700">
