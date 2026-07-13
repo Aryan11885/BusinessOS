@@ -10,12 +10,16 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 from app.services.gmail_auth import get_credentials
+from google.auth.transport.requests import Request
 
 
 class GmailService:
 
     def __init__(self):
         credentials = get_credentials()
+
+        if not credentials.valid:
+            credentials.refresh(Request())
 
         self.service = build(
             "gmail",
