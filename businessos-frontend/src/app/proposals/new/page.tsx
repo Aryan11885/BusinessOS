@@ -118,7 +118,7 @@ export default function NewProposalPage() {
 
           <div>
             <label className="block mb-1.5 text-sm font-medium text-slate-700">
-              Title
+              Proposal Name
             </label>
             <input
               name="title"
