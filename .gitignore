@@ -22,3 +22,5 @@ build/
 
 # Logs
 *.log
+credentials.json
+token.pickle
