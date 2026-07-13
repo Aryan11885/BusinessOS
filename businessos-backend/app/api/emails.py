@@ -22,7 +22,7 @@ async def send_email_route(
     attachment: UploadFile | None = File(None),
 ):
     try:
-        response = await send_email(
+        response = send_email(
             to=to,
             subject=subject,
             body=body,
@@ -31,7 +31,7 @@ async def send_email_route(
 
         return {
             "message": "Email sent successfully",
-            "smtp_response": str(response),
+            "response": response,
         }
 
     except Exception as e:
