@@ -3,8 +3,6 @@ from sqlalchemy import (
     Integer,
     String,
     Float,
-    Date,
-    Text,
     ForeignKey,
     DateTime,
 )
@@ -14,8 +12,8 @@ from sqlalchemy.sql import func
 from app.db.database import Base
 
 
-class Proposal(Base):
-    __tablename__ = "proposals"
+class InvoiceItem(Base):
+    __tablename__ = "invoice_items"
 
     id = Column(
         Integer,
@@ -23,77 +21,60 @@ class Proposal(Base):
         index=True
     )
 
-    organization_id = Column(
+    invoice_id = Column(
         Integer,
-        ForeignKey("organizations.id"),
+        ForeignKey("invoices.id"),
         nullable=False
     )
 
-    opportunity_id = Column(
-        Integer,
-        ForeignKey("opportunities.id"),
-        nullable=False
-    )
-
-    proposal_number = Column(
-        String,
-        unique=True,
-        nullable=False
-    )
-
-    proposal_date = Column(
-        Date,
-        nullable=True
-    )
-
-    valid_until = Column(
-        Date,
-        nullable=True
-    )
-
-    title = Column(
+    item_name = Column(
         String,
         nullable=False
     )
 
     description = Column(
-        Text,
-        nullable=True
-    )
-
-    terms_conditions = Column(
-        Text,
-        nullable=True
-    )
-
-    notes = Column(
-        Text,
-        nullable=True
-    )
-
-    subtotal = Column(
-        Float,
-        default=0
-    )
-
-    discount = Column(
-        Float,
-        default=0
-    )
-
-    tax = Column(
-        Float,
-        default=0
-    )
-
-    total_amount = Column(
-        Float,
-        default=0
-    )
-
-    status = Column(
         String,
-        default="DRAFT"
+        nullable=True
+    )
+
+    hsn_code = Column(
+        String,
+        nullable=True
+    )
+
+    quantity = Column(
+        Float,
+        default=1
+    )
+
+    unit = Column(
+        String,
+        default="Nos"
+    )
+
+    rate = Column(
+        Float,
+        default=0
+    )
+
+    gst_percentage = Column(
+        Float,
+        default=0
+    )
+
+    taxable_amount = Column(
+        Float,
+        default=0
+    )
+
+    gst_amount = Column(
+        Float,
+        default=0
+    )
+
+    line_total = Column(
+        Float,
+        default=0
     )
 
     created_at = Column(

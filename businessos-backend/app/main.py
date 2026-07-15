@@ -41,6 +41,14 @@ from app.api.emails import (
     router as emails_router,
 )
 
+from app.api.proposal_items import (
+    router as proposal_items_router,
+)
+
+from app.api.invoice_items import (
+    router as invoice_items_router,
+)
+
 # CORS
 app.add_middleware(
     CORSMiddleware,
@@ -64,6 +72,8 @@ app.include_router(tasks_router)
 app.include_router(invoices_router)
 app.include_router(payments_router) 
 app.include_router(emails_router)
+app.include_router(proposal_items_router)
+app.include_router(invoice_items_router)
 
 
 @app.get("/")

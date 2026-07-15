@@ -7,3 +7,4 @@ from app.models.lead_status import LeadStatus
 from app.models.lead import Lead
 from app.models.invoice import Invoice
 from app.models.payment import Payment
+import app.models.proposal_item

@@ -3,8 +3,6 @@ from sqlalchemy import (
     Integer,
     String,
     Float,
-    Date,
-    Text,
     ForeignKey,
     DateTime,
 )
@@ -14,8 +12,8 @@ from sqlalchemy.sql import func
 from app.db.database import Base
 
 
-class Proposal(Base):
-    __tablename__ = "proposals"
+class ProposalItem(Base):
+    __tablename__ = "proposal_items"
 
     id = Column(
         Integer,
@@ -23,55 +21,33 @@ class Proposal(Base):
         index=True
     )
 
-    organization_id = Column(
+    proposal_id = Column(
         Integer,
-        ForeignKey("organizations.id"),
+        ForeignKey("proposals.id"),
         nullable=False
     )
 
-    opportunity_id = Column(
-        Integer,
-        ForeignKey("opportunities.id"),
-        nullable=False
-    )
-
-    proposal_number = Column(
-        String,
-        unique=True,
-        nullable=False
-    )
-
-    proposal_date = Column(
-        Date,
-        nullable=True
-    )
-
-    valid_until = Column(
-        Date,
-        nullable=True
-    )
-
-    title = Column(
+    item_name = Column(
         String,
         nullable=False
     )
 
     description = Column(
-        Text,
+        String,
         nullable=True
     )
 
-    terms_conditions = Column(
-        Text,
-        nullable=True
+    quantity = Column(
+        Float,
+        default=1
     )
 
-    notes = Column(
-        Text,
-        nullable=True
+    unit = Column(
+        String,
+        default="Nos"
     )
 
-    subtotal = Column(
+    unit_price = Column(
         Float,
         default=0
     )
@@ -81,19 +57,14 @@ class Proposal(Base):
         default=0
     )
 
-    tax = Column(
+    tax_percentage = Column(
         Float,
         default=0
     )
 
-    total_amount = Column(
+    line_total = Column(
         Float,
         default=0
-    )
-
-    status = Column(
-        String,
-        default="DRAFT"
     )
 
     created_at = Column(

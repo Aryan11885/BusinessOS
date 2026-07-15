@@ -30,7 +30,14 @@ def create_proposal(
         proposal_number=payload.proposal_number,
         title=payload.title,
         description=payload.description,
-        amount=payload.amount,
+        subtotal=payload.subtotal,
+        discount=payload.discount,
+        tax=payload.tax,
+        total_amount=payload.total_amount,
+        proposal_date=payload.proposal_date,
+        valid_until=payload.valid_until,
+        terms_conditions=payload.terms_conditions,
+        notes=payload.notes,
         status=payload.status
     )
 
@@ -98,7 +105,16 @@ def update_proposal(
     proposal.proposal_number = payload.proposal_number
     proposal.title = payload.title
     proposal.description = payload.description
-    proposal.amount = payload.amount
+    proposal.proposal_date = payload.proposal_date
+    proposal.valid_until = payload.valid_until
+
+    proposal.terms_conditions = payload.terms_conditions
+    proposal.notes = payload.notes
+
+    proposal.subtotal = payload.subtotal
+    proposal.discount = payload.discount
+    proposal.tax = payload.tax
+    proposal.total_amount = payload.total_amount
     proposal.status = payload.status
 
     db.commit()

@@ -43,28 +43,13 @@ class Invoice(Base):
 
     invoice_number = Column(
         String,
-        nullable=False,
-        unique=True
-    )
-
-    amount = Column(
-        Float,
+        unique=True,
         nullable=False
     )
 
-    tax = Column(
-        Float,
-        default=0
-    )
-
-    total_amount = Column(
-        Float,
-        nullable=False
-    )
-
-    status = Column(
-        String,
-        default="DRAFT"
+    invoice_date = Column(
+        Date,
+        nullable=True
     )
 
     due_date = Column(
@@ -72,9 +57,104 @@ class Invoice(Base):
         nullable=True
     )
 
+    payment_mode = Column(
+        String,
+        nullable=True
+    )
+
+    reverse_charge = Column(
+        String,
+        default="No"
+    )
+
+    buyer_order_number = Column(
+        String,
+        nullable=True
+    )
+
+    supplier_reference = Column(
+        String,
+        nullable=True
+    )
+
+    vehicle_number = Column(
+        String,
+        nullable=True
+    )
+
+    delivery_date = Column(
+        Date,
+        nullable=True
+    )
+
+    transport_details = Column(
+        String,
+        nullable=True
+    )
+
+    terms_of_delivery = Column(
+        Text,
+        nullable=True
+    )
+
+    subtotal = Column(
+        Float,
+        default=0
+    )
+
+    tax = Column(
+        Float,
+        default=0
+    )
+
+    cgst = Column(
+        Float,
+        default=0
+    )
+
+    sgst = Column(
+        Float,
+        default=0
+    )
+
+    igst = Column(
+        Float,
+        default=0
+    )
+
+    freight_charge = Column(
+        Float,
+        default=0
+    )
+
+    packing_charge = Column(
+        Float,
+        default=0
+    )
+
+    round_off = Column(
+        Float,
+        default=0
+    )
+
+    total_amount = Column(
+        Float,
+        default=0
+    )
+
+    declaration = Column(
+        Text,
+        nullable=True
+    )
+
     notes = Column(
         Text,
         nullable=True
+    )
+
+    status = Column(
+        String,
+        default="DRAFT"
     )
 
     created_at = Column(
