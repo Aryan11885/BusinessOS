@@ -13,8 +13,6 @@ router = APIRouter(
     tags=["Emails"],
 )
 
-gmail = GmailService()
-
 
 @router.post("/send")
 async def send_email_route(
@@ -24,18 +22,19 @@ async def send_email_route(
     attachment: UploadFile | None = File(None),
 ):
     try:
+        # Create Gmail service only when this endpoint is called
+        gmail = GmailService()
 
         response = await gmail.send_email(
             to=to,
             subject=subject,
             body=body,
-            attachment=attachment,
+            uploaded_files=[attachment] if attachment else None,
         )
 
         return response
 
     except Exception as e:
-
         raise HTTPException(
             status_code=500,
             detail=str(e),

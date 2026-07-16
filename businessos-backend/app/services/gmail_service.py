@@ -6,11 +6,11 @@ from email.message import EmailMessage
 
 from fastapi import UploadFile
 
+from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 from app.services.gmail_auth import get_credentials
-from google.auth.transport.requests import Request
 
 
 class GmailService:
@@ -18,7 +18,11 @@ class GmailService:
     def __init__(self):
         credentials = get_credentials()
 
-        if not credentials.valid:
+        if (
+            credentials
+            and credentials.expired
+            and credentials.refresh_token
+        ):
             credentials.refresh(Request())
 
         self.service = build(
@@ -39,10 +43,8 @@ class GmailService:
         message["To"] = to
         message["Subject"] = subject
 
-        # Plain text version
         message.set_content(body)
 
-        # HTML version
         message.add_alternative(
             f"""
             <html>
@@ -60,7 +62,6 @@ class GmailService:
         self,
         message: EmailMessage,
     ):
-
         raw = base64.urlsafe_b64encode(
             message.as_bytes()
         ).decode()
@@ -68,20 +69,19 @@ class GmailService:
         return {
             "raw": raw
         }
-    
-    async def _add_attachment(
+
+    async def _add_uploaded_attachment(
         self,
         message: EmailMessage,
-        attachment: UploadFile | None,
+        attachment: UploadFile,
     ):
-        if not attachment:
-            return
-
         file_bytes = await attachment.read()
 
         content_type = (
             attachment.content_type
-            or mimetypes.guess_type(attachment.filename)[0]
+            or mimetypes.guess_type(
+                attachment.filename
+            )[0]
             or "application/octet-stream"
         )
 
@@ -94,24 +94,60 @@ class GmailService:
             filename=attachment.filename,
         )
 
+    def _add_file_attachment(
+        self,
+        message: EmailMessage,
+        file_path: str,
+    ):
+        if not os.path.exists(file_path):
+            raise FileNotFoundError(file_path)
+
+        with open(file_path, "rb") as file:
+            file_bytes = file.read()
+
+        content_type = (
+            mimetypes.guess_type(file_path)[0]
+            or "application/octet-stream"
+        )
+
+        maintype, subtype = content_type.split("/", 1)
+
+        message.add_attachment(
+            file_bytes,
+            maintype=maintype,
+            subtype=subtype,
+            filename=os.path.basename(file_path),
+        )
+
     async def send_email(
         self,
         to: str,
         subject: str,
         body: str,
-        attachment: UploadFile | None = None,
+        uploaded_files: list[UploadFile] | None = None,
+        file_paths: list[str] | None = None,
     ):
+
         message = self._create_message(
             to,
             subject,
             body,
         )
 
-        await self._add_attachment(
-            message,
-            attachment,
-        )
+        for uploaded_file in uploaded_files or []:
+            await self._add_uploaded_attachment(
+                message,
+                uploaded_file,
+            )
+
+        for file_path in file_paths or []:
+            self._add_file_attachment(
+                message,
+                file_path,
+            )
+
         try:
+
             encoded_message = self._encode_message(
                 message
             )
@@ -133,13 +169,11 @@ class GmailService:
             }
 
         except HttpError as error:
-
             raise Exception(
                 f"Gmail API Error: {error}"
             )
 
         except Exception as error:
-
             raise Exception(
                 str(error)
             )
