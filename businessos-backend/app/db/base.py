@@ -8,3 +8,4 @@ from app.models.lead import Lead
 from app.models.invoice import Invoice
 from app.models.payment import Payment
 import app.models.proposal_item
+from app.models.facebook_integration import FacebookIntegration

@@ -49,6 +49,8 @@ from app.api.invoice_items import (
     router as invoice_items_router,
 )
 
+from app.api.facebook import router as facebook_router
+
 # CORS
 app.add_middleware(
     CORSMiddleware,
@@ -74,6 +76,10 @@ app.include_router(payments_router)
 app.include_router(emails_router)
 app.include_router(proposal_items_router)
 app.include_router(invoice_items_router)
+app.include_router(
+    facebook_router,
+    prefix="/api",
+)
 
 
 @app.get("/")
