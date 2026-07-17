@@ -17,15 +17,8 @@ def facebook_login():
 
 
 @router.get("/callback")
-async def facebook_callback(code: str | None = None):
+async def facebook_callback(code: str):
 
-    if not code:
-        raise HTTPException(
-            status_code=400,
-            detail="Authorization code not received."
-        )
+    token = FacebookService.exchange_code_for_token(code)
 
-    return {
-        "message": "Facebook authorization successful",
-        "code": code
-    }
+    return token
