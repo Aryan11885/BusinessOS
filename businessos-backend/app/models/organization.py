@@ -1,4 +1,5 @@
 from sqlalchemy import Column, BigInteger, String, Boolean, TIMESTAMP
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 from app.db.database import Base
@@ -21,9 +22,18 @@ class Organization(Base):
 
     is_active = Column(Boolean, default=True)
 
-    created_at = Column(TIMESTAMP(timezone=True),
-                        server_default=func.now())
+    created_at = Column(
+        TIMESTAMP(timezone=True),
+        server_default=func.now()
+    )
 
-    updated_at = Column(TIMESTAMP(timezone=True),
-                        server_default=func.now(),
-                        onupdate=func.now())
+    updated_at = Column(
+        TIMESTAMP(timezone=True),
+        server_default=func.now(),
+        onupdate=func.now()
+    )
+
+    facebook_integrations = relationship(
+        "FacebookIntegration",
+        back_populates="organization",
+    )

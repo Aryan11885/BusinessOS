@@ -1,11 +1,14 @@
 from sqlalchemy import (
     Column,
     Integer,
+    BigInteger,
     String,
     Boolean,
-    DateTime,
     ForeignKey,
+    TIMESTAMP,
+    Text,
 )
+
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
@@ -18,7 +21,7 @@ class FacebookIntegration(Base):
     id = Column(Integer, primary_key=True, index=True)
 
     organization_id = Column(
-        Integer,
+        BigInteger,
         ForeignKey("organizations.id", ondelete="CASCADE"),
         nullable=False,
     )
@@ -32,23 +35,31 @@ class FacebookIntegration(Base):
     facebook_user_id = Column(String, nullable=True)
 
     page_id = Column(String, nullable=True)
+
     page_name = Column(String, nullable=True)
 
-    access_token = Column(String, nullable=True)
-    token_expires_at = Column(DateTime, nullable=True)
+    access_token = Column(Text, nullable=True)
 
-    is_connected = Column(Boolean, default=False)
+    token_expires_at = Column(TIMESTAMP, nullable=True)
+
+    is_connected = Column(
+        Boolean,
+        default=True,
+        nullable=False,
+    )
 
     created_at = Column(
-        DateTime(timezone=True),
+        TIMESTAMP(timezone=True),
         server_default=func.now(),
     )
 
     updated_at = Column(
-        DateTime(timezone=True),
+        TIMESTAMP(timezone=True),
         server_default=func.now(),
         onupdate=func.now(),
     )
 
-    organization = relationship("Organization")
-    user = relationship("User")
+    organization = relationship(
+        "Organization",
+        back_populates="facebook_integrations",
+    )

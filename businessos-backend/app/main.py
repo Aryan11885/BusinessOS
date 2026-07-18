@@ -50,6 +50,7 @@ from app.api.invoice_items import (
 )
 
 from app.api.facebook import router as facebook_router
+from app.api.test_auth import router as test_auth_router
 
 # CORS
 app.add_middleware(
@@ -80,6 +81,7 @@ app.include_router(
     facebook_router,
     prefix="/api",
 )
+app.include_router(test_auth_router)
 
 
 @app.get("/")
