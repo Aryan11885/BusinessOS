@@ -18,6 +18,7 @@ from app.models.facebook_integration import FacebookIntegration
 class FacebookService:
 
     @staticmethod
+    @staticmethod
     def get_login_url():
         params = {
             "client_id": FACEBOOK_APP_ID,
@@ -25,11 +26,18 @@ class FacebookService:
             "response_type": "code",
             "config_id": FACEBOOK_CONFIG_ID,
         }
-
-        return (
+    
+        url = (
             "https://www.facebook.com/v23.0/dialog/oauth?"
             + urlencode(params)
         )
+    
+        print("=" * 80)
+        print("FACEBOOK LOGIN URL")
+        print(url)
+        print("=" * 80)
+    
+        return url
 
     @staticmethod
     def exchange_code_for_token(code: str):
