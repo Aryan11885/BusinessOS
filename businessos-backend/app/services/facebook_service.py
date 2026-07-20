@@ -18,7 +18,6 @@ from app.models.facebook_integration import FacebookIntegration
 class FacebookService:
 
     @staticmethod
-    @staticmethod
     def get_login_url():
         params = {
             "client_id": FACEBOOK_APP_ID,

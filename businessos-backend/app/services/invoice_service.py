@@ -1,4 +1,11 @@
 from sqlalchemy.orm import Session
+import os
+
+from app.services.invoice_generator import InvoiceGenerator
+from app.pdf.invoice_template import generate_invoice_pdf
+
+from app.models.customer import Customer
+from app.services.gmail_service import GmailService
 
 from app.models.invoice import Invoice
 
@@ -154,3 +161,100 @@ class InvoiceService:
         db.commit()
 
         return True
+    
+    @staticmethod
+    def generate_pdf(
+        db: Session,
+        invoice_id: int,
+    ):
+        pdf_data = InvoiceGenerator.build_pdf_data(
+            db,
+            invoice_id,
+        )
+    
+        if not pdf_data:
+            return None
+    
+        output_folder = "generated_pdfs"
+    
+        os.makedirs(
+            output_folder,
+            exist_ok=True,
+        )
+    
+        output_file = os.path.join(
+            output_folder,
+            f"{pdf_data['invoice_number']}.pdf",
+        )
+    
+        generate_invoice_pdf(
+            pdf_data,
+            output_file,
+        )
+    
+        return output_file
+    
+    @staticmethod
+    async def send_invoice_email(
+        db: Session,
+        invoice_id: int,
+    ):
+        invoice = (
+            db.query(Invoice)
+            .filter(
+                Invoice.id == invoice_id
+            )
+            .first()
+        )
+    
+        if not invoice:
+            return {
+                "success": False,
+                "message": "Invoice not found",
+            }
+    
+        customer = (
+            db.query(Customer)
+            .filter(
+                Customer.id == invoice.customer_id
+            )
+            .first()
+        )
+    
+        if not customer:
+            return {
+                "success": False,
+                "message": "Customer not found",
+            }
+    
+        pdf_path = InvoiceService.generate_pdf(
+            db,
+            invoice_id,
+        )
+    
+        gmail = GmailService()
+    
+        await gmail.send_email(
+            to=customer.email,
+            subject=f"Invoice - {invoice.invoice_number}",
+            body=f"""
+    Hello {customer.contact_name},
+    
+    Please find attached your invoice.
+    
+    Invoice Number : {invoice.invoice_number}
+    
+    Thank you for your business.
+    
+    BusinessOS Team
+            """,
+            file_paths=[
+                pdf_path,
+            ],
+        )
+    
+        return {
+            "success": True,
+            "message": "Invoice emailed successfully.",
+            "recipient": customer.email,
+        }

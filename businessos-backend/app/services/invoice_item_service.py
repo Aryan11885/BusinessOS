@@ -59,7 +59,7 @@ class InvoiceItemService:
             total_tax += item.gst_amount
             total_amount += item.line_total
 
-        invoice.amount = subtotal
+        invoice.subtotal = subtotal
         invoice.tax = total_tax
         invoice.total_amount = total_amount
 

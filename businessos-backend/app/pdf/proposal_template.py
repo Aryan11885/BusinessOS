@@ -442,8 +442,5 @@ def generate_proposal_pdf(data: dict, output_path: str):
 
     elements.append(footer_table)
 
-    # ----------------------------------------------------------
-    # BUILD
-    # ----------------------------------------------------------
 
     doc.build(elements)
