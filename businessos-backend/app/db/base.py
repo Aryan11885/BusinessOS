@@ -9,3 +9,4 @@ from app.models.invoice import Invoice
 from app.models.payment import Payment
 import app.models.proposal_item
 from app.models.facebook_integration import FacebookIntegration
+from app.models.gmail_integration import GmailIntegration

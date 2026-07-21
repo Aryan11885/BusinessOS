@@ -1,3 +1,5 @@
+from sqlalchemy.orm import relationship
+
 from sqlalchemy import (
     Column,
     BigInteger,
@@ -45,4 +47,10 @@ class User(Base):
         TIMESTAMP(timezone=True),
         server_default=func.now(),
         onupdate=func.now()
+    )
+
+    gmail_integrations = relationship(
+        "GmailIntegration",
+        back_populates="user",
+        cascade="all, delete-orphan",
     )

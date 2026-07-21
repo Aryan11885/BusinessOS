@@ -6,24 +6,29 @@ from email.message import EmailMessage
 
 from fastapi import UploadFile
 
-from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
-from app.services.gmail_auth import get_credentials
+from sqlalchemy.orm import Session
 
+from app.services.gmail_auth import (
+    get_credentials,
+)
 
 class GmailService:
 
-    def __init__(self):
-        credentials = get_credentials()
+    def __init__(
+        self,
+        db: Session,
+        organization_id: int,
+        user_id: int,
+    ):
 
-        if (
-            credentials
-            and credentials.expired
-            and credentials.refresh_token
-        ):
-            credentials.refresh(Request())
+        credentials = get_credentials(
+            db=db,
+            organization_id=organization_id,
+            user_id=user_id,
+        )
 
         self.service = build(
             "gmail",
@@ -61,13 +66,14 @@ class GmailService:
     def _encode_message(
         self,
         message: EmailMessage,
-    ):
+    ) -> dict:
+
         raw = base64.urlsafe_b64encode(
             message.as_bytes()
         ).decode()
 
         return {
-            "raw": raw
+            "raw": raw,
         }
 
     async def _add_uploaded_attachment(
@@ -75,6 +81,7 @@ class GmailService:
         message: EmailMessage,
         attachment: UploadFile,
     ):
+
         file_bytes = await attachment.read()
 
         content_type = (
@@ -99,14 +106,24 @@ class GmailService:
         message: EmailMessage,
         file_path: str,
     ):
-        if not os.path.exists(file_path):
-            raise FileNotFoundError(file_path)
 
-        with open(file_path, "rb") as file:
+        if not os.path.exists(file_path):
+
+            raise FileNotFoundError(
+                file_path
+            )
+
+        with open(
+            file_path,
+            "rb",
+        ) as file:
+
             file_bytes = file.read()
 
         content_type = (
-            mimetypes.guess_type(file_path)[0]
+            mimetypes.guess_type(
+                file_path
+            )[0]
             or "application/octet-stream"
         )
 
@@ -116,41 +133,51 @@ class GmailService:
             file_bytes,
             maintype=maintype,
             subtype=subtype,
-            filename=os.path.basename(file_path),
+            filename=os.path.basename(
+                file_path
+            ),
         )
 
     async def send_email(
         self,
-        to: str,
+        recipient_email: str,
         subject: str,
         body: str,
-        uploaded_files: list[UploadFile] | None = None,
+        attachments: list[UploadFile] | None = None,
         file_paths: list[str] | None = None,
-    ):
+    ) -> dict:
+        """
+        Send an email using the authenticated Gmail account.
+        """
 
         message = self._create_message(
-            to,
-            subject,
-            body,
+            to=recipient_email,
+            subject=subject,
+            body=body,
         )
 
-        for uploaded_file in uploaded_files or []:
-            await self._add_uploaded_attachment(
-                message,
-                uploaded_file,
-            )
+        if attachments:
 
-        for file_path in file_paths or []:
-            self._add_file_attachment(
-                message,
-                file_path,
-            )
+            for attachment in attachments:
 
+                await self._add_uploaded_attachment(
+                    message=message,
+                    attachment=attachment,
+                )
+
+        if file_paths:
+
+            for file_path in file_paths:
+
+                self._add_file_attachment(
+                    message=message,
+                    file_path=file_path,
+                )
+
+        encoded_message = self._encode_message(
+            message
+        )
         try:
-
-            encoded_message = self._encode_message(
-                message
-            )
 
             response = (
                 self.service.users()
@@ -164,16 +191,19 @@ class GmailService:
 
             return {
                 "success": True,
-                "message": "Email sent successfully",
+                "message": "Email sent successfully.",
                 "gmail_message_id": response.get("id"),
+                "gmail_thread_id": response.get("threadId"),
             }
 
         except HttpError as error:
+
             raise Exception(
                 f"Gmail API Error: {error}"
             )
 
         except Exception as error:
+
             raise Exception(
-                str(error)
+                f"Failed to send email: {str(error)}"
             )

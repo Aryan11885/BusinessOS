@@ -37,3 +37,9 @@ class Organization(Base):
         "FacebookIntegration",
         back_populates="organization",
     )
+
+    gmail_integrations = relationship(
+        "GmailIntegration",
+        back_populates="organization",
+        cascade="all, delete-orphan",
+    )

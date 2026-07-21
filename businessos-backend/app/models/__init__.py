@@ -14,3 +14,4 @@ from app.models.payment import Payment
 from .proposal_item import ProposalItem
 from .invoice_item import InvoiceItem
 from .facebook_integration import FacebookIntegration
+from .gmail_integration import GmailIntegration
